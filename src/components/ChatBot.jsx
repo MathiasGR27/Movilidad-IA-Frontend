@@ -32,7 +32,9 @@ function ChatBot({ setOrigen, setDestino, setRutaRecomendada }) {
     setMensajes((prev) => [...prev, mensajeUsuario]);
 
     try {
-      const res = await api.post("/chat", { mensaje });
+      const res = await api.post("/chat", {
+        mensaje
+      });
 
       setOrigen(res.data.origen);
       setDestino(res.data.destino);
@@ -59,14 +61,45 @@ function ChatBot({ setOrigen, setDestino, setRutaRecomendada }) {
         ...prev,
         {
           tipo: "bot",
-          texto: "Ocurrió un error al procesar tu consulta."
+          texto: "Ocurrió un error al procesar tu consulta. Intenta escribir el origen y destino con más detalle."
         }
       ]);
     }
   };
 
+  const nuevaConversacion = () => {
+    localStorage.removeItem("mensajes_chat");
+    localStorage.removeItem("origen");
+    localStorage.removeItem("destino");
+    localStorage.removeItem("rutaRecomendada");
+
+    setMensajes([
+      {
+        tipo: "bot",
+        texto: "Hola ¿A dónde quieres ir?"
+      }
+    ]);
+
+    setOrigen(null);
+    setDestino(null);
+    setRutaRecomendada(null);
+    setMensaje("");
+  };
+
   return (
     <div className="chat-section">
+      <div className="chat-header">
+        <h3>Asistente de rutas</h3>
+      </div>
+
+      <button
+        className="new-chat-floating"
+        onClick={nuevaConversacion}
+        title="Nuevo chat"
+      >
+        ＋
+      </button>
+
       <div className="chat-messages">
         {mensajes.map((item, index) => (
           <div key={index} className={`message-row ${item.tipo}`}>
@@ -86,7 +119,7 @@ function ChatBot({ setOrigen, setDestino, setRutaRecomendada }) {
           value={mensaje}
           onChange={(e) => setMensaje(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && enviarMensaje()}
-          placeholder="Ej: quiero ir desde el Shopping al Parque de la Juventud"
+          placeholder="Ej: quiero ir desde el Shopping hasta Ciudad Verde"
         />
 
         <button onClick={enviarMensaje}>➤</button>

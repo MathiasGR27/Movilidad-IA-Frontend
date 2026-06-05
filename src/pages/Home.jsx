@@ -8,6 +8,7 @@ function Home() {
   const navigate = useNavigate();
 
   const [perfilAbierto, setPerfilAbierto] = useState(false);
+  const [chatKey, setChatKey] = useState(0);
 
   const [origen, setOrigen] = useState(() => {
     const data = localStorage.getItem("origen");
@@ -37,6 +38,20 @@ function Home() {
     navigate("/login");
   };
 
+  const nuevaConversacion = () => {
+    localStorage.removeItem("origen");
+    localStorage.removeItem("destino");
+    localStorage.removeItem("rutaRecomendada");
+    localStorage.removeItem("mensajes_chat");
+
+    setOrigen(null);
+    setDestino(null);
+    setRutaRecomendada(null);
+
+    setChatKey(prev => prev + 1);
+
+  };
+
   return (
     <div className="layout">
       <aside className="sidebar">
@@ -48,6 +63,14 @@ function Home() {
           <Link to="/mapa">
             <button className="nav-btn">🗺️</button>
           </Link>
+
+          <button
+            className="nav-btn"
+            onClick={nuevaConversacion}
+            title="Nuevo chat"
+          >
+            ➕
+        </button>
         </div>
 
         <div className="bottom-buttons">
@@ -102,6 +125,7 @@ function Home() {
 
         <section className="content">
           <ChatBot
+            key={chatKey}
             setOrigen={setOrigen}
             setDestino={setDestino}
             setRutaRecomendada={setRutaRecomendada}

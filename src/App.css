@@ -705,3 +705,58 @@ body,
 .bubble{
   white-space:pre-line;
 }
+
+.chat-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+
+.chat-header h3{
+  color:#263645;
+  font-size:22px;
+}
+
+.chat-header button{
+  border:none;
+  background:#263f3d;
+  color:white;
+  padding:10px 14px;
+  border-radius:14px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.chat-header button:hover{
+  background:#1d3231;
+}
+
+.chat-section {
+  position: relative;
+}
+
+.new-chat-floating {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: #263f3d;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  transition: 0.3s ease;
+  z-index: 10;
+}
+
+.new-chat-floating:hover {
+  transform: scale(1.08);
+  background: #1d3231;
+}
