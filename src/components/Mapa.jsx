@@ -37,11 +37,11 @@ function Mapa({ origen, destino, rutaRecomendada }) {
         <GeoJSON
           key={JSON.stringify(rutaRecomendada)}
           data={rutaRecomendada}
-          style={{
-            color: "blue",
+          style={(feature) => ({
+            color: feature.properties.color || "blue",
             weight: 7,
             opacity: 0.95
-          }}
+          })}
         />
       )}
 
