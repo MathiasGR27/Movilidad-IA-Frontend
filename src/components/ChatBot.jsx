@@ -42,6 +42,7 @@ function ChatBot({ setOrigen, setDestino, setRutaRecomendada }) {
 
       localStorage.setItem("origen", JSON.stringify(res.data.origen));
       localStorage.setItem("destino", JSON.stringify(res.data.destino));
+      localStorage.setItem("transbordosInfo",JSON.stringify(res.data.transbordos_info || []));
       localStorage.setItem(
         "rutaRecomendada",
         JSON.stringify(res.data.tramo_geojson)
@@ -72,6 +73,7 @@ function ChatBot({ setOrigen, setDestino, setRutaRecomendada }) {
     localStorage.removeItem("origen");
     localStorage.removeItem("destino");
     localStorage.removeItem("rutaRecomendada");
+    localStorage.removeItem("transbordosInfo");
 
     setMensajes([
       {
