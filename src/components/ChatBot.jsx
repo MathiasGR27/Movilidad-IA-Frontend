@@ -10,12 +10,52 @@ function ChatBot({ setOrigen, setDestino, setRutaRecomendada }) {
     return guardados
       ? JSON.parse(guardados)
       : [
-          {
-            tipo: "bot",
-            texto: "Hola ¿A dónde quieres ir?"
-          }
-        ];
+        {
+          tipo: "bot",
+          texto: "Hola ¿A dónde quieres ir?"
+        }
+      ];
   });
+
+  useEffect(() => {
+
+    const crearConversacion = async () => {
+
+      const conversacionActual =
+        localStorage.getItem(
+          "conversacion_id"
+        );
+
+      if (!conversacionActual) {
+
+        try {
+
+          const response =
+            await api.post(
+              "/conversaciones"
+            );
+
+          localStorage.setItem(
+            "conversacion_id",
+            response.data.id
+          );
+
+        } catch (error) {
+
+          console.error(
+            "Error creando conversación",
+            error
+          );
+
+        }
+
+      }
+
+    };
+
+    crearConversacion();
+
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("mensajes_chat", JSON.stringify(mensajes));
@@ -32,8 +72,18 @@ function ChatBot({ setOrigen, setDestino, setRutaRecomendada }) {
     setMensajes((prev) => [...prev, mensajeUsuario]);
 
     try {
+      const conversacionId = localStorage.getItem(
+        "conversacion_id"
+      );
+
       const res = await api.post("/chat", {
-        mensaje
+
+        mensaje,
+
+        conversacion_id: Number(
+          conversacionId
+        )
+
       });
 
       setOrigen(res.data.origen);
@@ -42,7 +92,7 @@ function ChatBot({ setOrigen, setDestino, setRutaRecomendada }) {
 
       localStorage.setItem("origen", JSON.stringify(res.data.origen));
       localStorage.setItem("destino", JSON.stringify(res.data.destino));
-      localStorage.setItem("transbordosInfo",JSON.stringify(res.data.transbordos_info || []));
+      localStorage.setItem("transbordosInfo", JSON.stringify(res.data.transbordos_info || []));
       localStorage.setItem(
         "rutaRecomendada",
         JSON.stringify(res.data.tramo_geojson)
@@ -68,25 +118,7 @@ function ChatBot({ setOrigen, setDestino, setRutaRecomendada }) {
     }
   };
 
-  const nuevaConversacion = () => {
-    localStorage.removeItem("mensajes_chat");
-    localStorage.removeItem("origen");
-    localStorage.removeItem("destino");
-    localStorage.removeItem("rutaRecomendada");
-    localStorage.removeItem("transbordosInfo");
 
-    setMensajes([
-      {
-        tipo: "bot",
-        texto: "Hola ¿A dónde quieres ir?"
-      }
-    ]);
-
-    setOrigen(null);
-    setDestino(null);
-    setRutaRecomendada(null);
-    setMensaje("");
-  };
 
   return (
     <div className="chat-section">
@@ -94,13 +126,7 @@ function ChatBot({ setOrigen, setDestino, setRutaRecomendada }) {
         <h3>Asistente de rutas</h3>
       </div>
 
-      <button
-        className="new-chat-floating"
-        onClick={nuevaConversacion}
-        title="Nuevo chat"
-      >
-        ＋
-      </button>
+
 
       <div className="chat-messages">
         {mensajes.map((item, index) => (

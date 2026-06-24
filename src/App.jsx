@@ -5,6 +5,8 @@ import MapaPage from "./pages/MapaPage";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Historial from "./pages/Historial";
+import HistorialDetalle from "./pages/HistorialDetalle";
 
 import "./App.css";
 
@@ -38,6 +40,16 @@ function App() {
                 <Route 
                     path="/register"  
                     element={<Register />} 
+                />
+
+                <Route
+                    path="/historial"
+                    element={<Historial />}
+                />
+
+                <Route
+                    path="/historial/detalle/:id"
+                    element={<HistorialDetalle />}
                 />
 
             </Routes>
