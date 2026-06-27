@@ -10,7 +10,7 @@ function MapaPage() {
     <div className="mapa-page">
       <div className="mapa-header">
         <Link to="/">
-          <button className="volver-btn">⬅ Volver</button>
+          <button className="volver-btn"> Volver</button>
         </Link>
       </div>
 

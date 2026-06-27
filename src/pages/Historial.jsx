@@ -85,9 +85,7 @@ function Historial() {
         </h1>
 
         <Link to="/">
-          <button>
-            ⬅ Volver
-          </button>
+           <button className="volver-btn"> Volver</button>
         </Link>
 
       </div>
@@ -136,7 +134,7 @@ function Historial() {
                     <span
                       className="favorito-activo"
                     >
-                      ⭐ Guardada
+                      Guardada
                     </span>
 
                   ) : (
@@ -149,7 +147,7 @@ function Historial() {
                         )
                       }
                     >
-                      ⭐ Agregar
+                      Agregar
                     </button>
 
                   )
@@ -161,9 +159,7 @@ function Historial() {
                     <Link
                         to={`/historial/detalle/${ruta.id}`}
                     >
-                        <button>
-                        Ver
-                        </button>
+                      <button className="ver-btn"> Ver</button>
                     </Link>
 
                     </td>

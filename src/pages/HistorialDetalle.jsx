@@ -53,9 +53,7 @@ function HistorialDetalle() {
         </h1>
 
         <Link to="/historial">
-          <button>
-            ⬅ Volver
-          </button>
+          <button className="volver-btn"> Volver</button>
         </Link>
 
       </div>
