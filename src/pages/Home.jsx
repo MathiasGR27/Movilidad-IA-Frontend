@@ -203,7 +203,7 @@ function Home() {
             <FaBars />
           </button>
 
-          <h1>Voamy</h1>
+          <h1>Voomy</h1>
 
           {usuario ? (
             <div className="profile-menu">

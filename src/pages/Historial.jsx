@@ -85,7 +85,7 @@ function Historial() {
         </h1>
 
         <Link to="/">
-           <button className="volver-btn"> Volver</button>
+          <button className="volver-btn"> Volver</button>
         </Link>
 
       </div>
@@ -119,21 +119,19 @@ function Historial() {
 
               <tr key={ruta.id}>
 
-                <td>{ruta.fecha}</td>
+                <td data-label="Fecha">{ruta.fecha}</td>
 
-                <td>{ruta.origen}</td>
+                <td data-label="Origen">{ruta.origen}</td>
 
-                <td>{ruta.destino}</td>
+                <td data-label="Destino">{ruta.destino}</td>
 
-                <td>{ruta.transbordos}</td>
+                <td data-label="Transbordos">{ruta.transbordos}</td>
 
-                <td>
+                <td data-label="Favorito">
 
                   {ruta.es_favorito ? (
 
-                    <span
-                      className="favorito-activo"
-                    >
+                    <span className="favorito-activo">
                       Guardada
                     </span>
 
@@ -141,28 +139,20 @@ function Historial() {
 
                     <button
                       className="favorito-btn"
-                      onClick={() =>
-                        agregarFavorito(
-                          ruta.id
-                        )
-                      }
+                      onClick={() => agregarFavorito(ruta.id)}
                     >
                       Agregar
                     </button>
 
-                  )
-                  }
+                  )}
 
                 </td>
 
-                <td>
-                    <Link
-                        to={`/historial/detalle/${ruta.id}`}
-                    >
-                      <button className="ver-btn"> Ver</button>
-                    </Link>
-
-                    </td>
+                <td data-label="Detalle">
+                  <Link to={`/historial/detalle/${ruta.id}`}>
+                    <button className="ver-btn"> Ver</button>
+                  </Link>
+                </td>
 
               </tr>
 
