@@ -943,90 +943,172 @@ html, body {
 .profile-action-buttons .danger:hover { background: var(--coral-dark); border-color: var(--coral-dark); }
 
 /* ─── AUTH PAGE ──────────────────────────────────────────── */
-.auth-page {
+.voomy-login-page {
   width: 100%;
   min-height: 100vh;
-  background: var(--bg);
-  display: grid;
-  place-items: center;
-  padding: 30px;
+  background: #ffffff;
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding-top: 70px;
 }
 
-.auth-card {
+.voomy-logo {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+}
+
+.voomy-logo img {
+  height: 55px;
+  width: auto;
+  object-fit: contain;
+}
+
+.voomy-login-container {
   width: 420px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 34px;
-  box-shadow: var(--shadow-2);
+
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  align-items: center;
 }
 
-.auth-card h1 {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 600;
-  color: var(--ink);
-  font-size: 30px;
+.voomy-mascot {
+  margin-bottom: 8px;
+}
+
+.voomy-mascot img {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+}
+
+.voomy-login-container h2 {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 400;
+  color: #222;
+
   text-align: center;
+  margin-bottom: 24px;
 }
-.auth-card p  { color: var(--ink-muted); text-align: center; margin-bottom: 8px; }
 
-.auth-card input {
-  border: 1px solid var(--border);
-  background: var(--surface-alt);
-  color: var(--ink);
-  padding: 14px 16px;
-  border-radius: var(--radius-sm);
-  outline: none;
+.voomy-login-container input {
+  width: 200px;
+  height: 42px;
+
+  border: 1px solid #cfd6dd;
+  border-radius: 999px;
+
+  padding: 0 18px;
+  margin-bottom: 14px;
+
   font-size: 14px;
+  font-family: var(--font-body);
+
+  outline: none;
+  background: #ffffff;
+
   transition: var(--ease);
 }
 
-.auth-card input:focus { background: var(--surface); border-color: var(--teal); }
+.voomy-login-container input:focus {
+  border-color: #cde86d;
+}
 
-.auth-card button {
+.voomy-login-container button {
+  width: 200px;
+  height: 42px;
+
   border: none;
-  background: var(--teal-dark);
-  color: #ffffff;
-  padding: 15px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
+  border-radius: 999px;
+
+  background: #e8f5a8;
+  color: #000;
+
   font-size: 15px;
   font-weight: 500;
-  margin-top: 6px;
+  font-family: var(--font-body);
+
+  cursor: pointer;
   transition: var(--ease);
+
+  margin-top: 2px;
 }
 
-.auth-card button:hover { background: var(--teal-darker); }
-.auth-card span { text-align: center; color: var(--ink-muted); font-size: 13px; }
-.auth-card a    { color: var(--teal); font-weight: 500; text-decoration: none; }
+.voomy-login-container button:hover {
+  background: #dff08a;
+}
+
+.register-text {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #222;
+}
+
+.register-text a {
+  color: #3b82f6;
+  text-decoration: underline;
+  font-weight: 400;
+}
 
 .auth-error {
-  background: var(--coral-light);
-  color: var(--coral-dark);
-  padding: 11px;
-  border-radius: var(--radius-sm);
+  width: 200px;
+  margin-bottom: 12px;
+
+  padding: 10px;
+
+  background: #ffe9e9;
+  color: #d62828;
+
+  border-radius: 10px;
+
   text-align: center;
   font-size: 13px;
 }
 
-.top-auth-btn {
-  border: none;
-  background: var(--teal-dark);
-  color: #ffffff;
-  padding: 13px 20px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: var(--ease);
+/* Responsive */
+
+@media (max-width: 768px) {
+
+  .voomy-login-page {
+    padding: 30px 20px;
+    justify-content: center;
+  }
+
+  .voomy-logo {
+    position: static;
+    margin-bottom: 25px;
+    align-self: flex-start;
+  }
+
+  .voomy-login-container {
+    width: 100%;
+  }
+
+  .voomy-mascot img {
+    width: 120px;
+  }
+
+  .voomy-login-container h2 {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .voomy-login-container input,
+  .voomy-login-container button {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .auth-error {
+    width: 100%;
+    max-width: 320px;
+  }
 }
-
-.top-auth-btn:hover { background: var(--teal-darker); }
-
 /* ─── HISTORIAL ──────────────────────────────────────────── */
 .historial-page {
   padding: 36px;

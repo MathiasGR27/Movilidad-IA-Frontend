@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
 
+import logo from "../assets/voomy-logo.png";
+import mascota from "../assets/voomy-monster.png";
+
 function Login() {
   const navigate = useNavigate();
 
@@ -37,17 +40,35 @@ function Login() {
   };
 
   return (
-    <div className="auth-page">
-      <form className="auth-card" onSubmit={handleSubmit}>
-        <h1>Iniciar sesión</h1>
-        <p>Accede a tu asistente de movilidad urbana.</p>
+    <div className="voomy-login-page">
 
-        {mensaje && <div className="auth-error">{mensaje}</div>}
+      <div className="voomy-logo">
+        <img src={logo} alt="Logo" />
+      </div>
+
+      <form
+        className="voomy-login-container"
+        onSubmit={handleSubmit}
+      >
+
+        <div className="voomy-mascot">
+          <img src={mascota} alt="Mascota" />
+        </div>
+
+        <h2>
+          Ingresa tu correo electrónico para iniciar sesión
+        </h2>
+
+        {mensaje && (
+          <div className="auth-error">
+            {mensaje}
+          </div>
+        )}
 
         <input
           type="email"
           name="email"
-          placeholder="Correo electrónico"
+          placeholder="Correo"
           value={form.email}
           onChange={handleChange}
         />
@@ -60,12 +81,16 @@ function Login() {
           onChange={handleChange}
         />
 
-        <button type="submit">Ingresar</button>
+        <button type="submit">
+          Ingresar
+        </button>
 
-        <span>
+        <p className="register-text">
           ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
-        </span>
+        </p>
+
       </form>
+
     </div>
   );
 }
