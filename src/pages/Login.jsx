@@ -1,40 +1,75 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+
+import {
+  Link,
+  useNavigate
+} from "react-router-dom";
+
 import api from "../services/api";
 
 import logo from "../assets/voomy-logo.png";
 import mascota from "../assets/voomy-monster.png";
 
+import {
+  FaBus,
+  FaMapMarkedAlt
+} from "react-icons/fa";
+
+
 function Login() {
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
+  const [
+    form,
+    setForm
+  ] = useState({
     email: "",
     password: ""
   });
 
-  const [mensaje, setMensaje] = useState("");
+  const [
+    mensaje,
+    setMensaje
+  ] = useState("");
 
-  const handleChange = (e) => {
+  const handleChange = (event) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value
+      [event.target.name]:
+        event.target.value
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (
+    event
+  ) => {
+    event.preventDefault();
 
     try {
-      const res = await api.post("/auth/login", form);
+      const response = await api.post(
+        "/auth/login",
+        form
+      );
 
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("usuario", JSON.stringify(res.data.usuario));
+      localStorage.setItem(
+        "token",
+        response.data.token
+      );
+
+      localStorage.setItem(
+        "usuario",
+        JSON.stringify(
+          response.data.usuario
+        )
+      );
 
       navigate("/");
     } catch (error) {
       setMensaje(
-        error.response?.data?.mensaje || "Error al iniciar sesión"
+        error.response
+          ?.data
+          ?.mensaje ||
+          "Error al iniciar sesión"
       );
     }
   };
@@ -43,7 +78,21 @@ function Login() {
     <div className="voomy-login-page">
 
       <div className="voomy-logo">
-        <img src={logo} alt="Logo" />
+        <img
+          src={logo}
+          alt="Logo de Voomy"
+        />
+
+        <div className="login-app-description">
+          <FaBus />
+
+          <p>
+            Sistema inteligente para
+            consultar rutas del transporte
+            público urbano de Santo Domingo
+            de los Tsáchilas.
+          </p>
+        </div>
       </div>
 
       <form
@@ -52,12 +101,25 @@ function Login() {
       >
 
         <div className="voomy-mascot">
-          <img src={mascota} alt="Mascota" />
+          <img
+            src={mascota}
+            alt="Mascota de Voomy"
+          />
         </div>
 
         <h2>
-          Ingresa tu correo electrónico para iniciar sesión
+          Ingresa tu correo electrónico
+          para iniciar sesión
         </h2>
+
+        <div className="login-service-label">
+          <FaMapMarkedAlt />
+
+          <span>
+            Aplicación exclusiva para el
+            transporte urbano de Santo Domingo
+          </span>
+        </div>
 
         {mensaje && (
           <div className="auth-error">
@@ -71,6 +133,7 @@ function Login() {
           placeholder="Correo"
           value={form.email}
           onChange={handleChange}
+          required
         />
 
         <input
@@ -79,6 +142,7 @@ function Login() {
           placeholder="Contraseña"
           value={form.password}
           onChange={handleChange}
+          required
         />
 
         <button type="submit">
@@ -86,7 +150,11 @@ function Login() {
         </button>
 
         <p className="register-text">
-          ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
+          ¿No tienes cuenta?{" "}
+
+          <Link to="/register">
+            Regístrate
+          </Link>
         </p>
 
       </form>

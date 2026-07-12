@@ -19,13 +19,16 @@
   --teal-light: #e0f2fe;
   --teal-text-on-light: #075985;
 
-  --amber: #0369a1;
-  --amber-dark: #0369a1;
-  --amber-light: #e0f2fe;
+  /* AMBER: antes era idéntico a teal-dark (no aportaba contraste).
+     Ahora tiene tono propio, cálido, para favoritos y acentos secundarios. */
+  --amber: #069ad9;
+  --amber-dark: #0981b4;
+  --amber-light: #e2f9fe;
+  --amber-text-on-light: #0e6d92f6;
 
-  --coral: #c1502e;
-  --coral-dark: #96371c;
-  --coral-light: #faece7;
+  --coral: #2e5ac1;
+  --coral-dark: #1c3896;
+  --coral-light: #e7f2fa;
 
   --success-bg: #e0f2fe;
   --success-text: #0c4a6e;
@@ -50,6 +53,17 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+/* ─── SCROLLBARS INVISIBLES (global) ────────────────────── */
+* {
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE / viejo Edge */
+}
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;               /* Chrome / Safari / nuevo Edge */
 }
 
 /* ─── BASE ───────────────────────────────────────────────── */
@@ -128,6 +142,7 @@ html, body {
 .nav-btn:hover {
   background: rgba(255, 255, 255, 0.08);
   color: #ffffff;
+  transform: translateY(-1px);
 }
 
 .nav-btn.active {
@@ -192,6 +207,7 @@ html, body {
 .conversation-btn:hover {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.18);
+  transform: translateX(2px);
 }
 
 .conversation-text {
@@ -446,6 +462,7 @@ html, body {
   line-height: 1.6;
   white-space: pre-line;
   font-size: 14px;
+  box-shadow: var(--shadow-1);
 }
 
 .bubble h2 {
@@ -489,6 +506,7 @@ html, body {
 
 .new-chat-floating:hover {
   background: var(--teal-darker);
+  transform: scale(1.05);
 }
 
 /* ─── INPUT ──────────────────────────────────────────────── */
@@ -506,6 +524,7 @@ html, body {
 .input-box:focus-within {
   border-color: var(--teal);
   background: var(--surface);
+  box-shadow: 0 0 0 3px var(--teal-light);
 }
 
 .input-box input {
@@ -605,7 +624,8 @@ html, body {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(31, 44, 40, 0.45);
+  background: rgba(15, 25, 35, 0.55);
+  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -783,7 +803,7 @@ html, body {
   height: 120px;
   border-radius: 50%;
   background: var(--teal-dark);
-  border: 4px solid var(--amber-light);
+  border: 4px solid var(--teal-light);
   display: grid;
   place-items: center;
   font-size: 52px;
@@ -852,7 +872,7 @@ html, body {
 
 .profile-banner {
   padding: 30px;
-  background: var(--teal-dark);
+  background: linear-gradient(135deg, var(--teal-dark), var(--teal-darker));
   color: #ffffff;
   text-align: center;
   border: none;
@@ -875,6 +895,7 @@ html, body {
 .stat-card:hover {
   border-color: var(--teal);
   box-shadow: var(--shadow-2);
+  transform: translateY(-2px);
 }
 
 .stat-icon { font-size: 2.2rem; color: var(--teal); margin-bottom: 8px; }
@@ -943,23 +964,31 @@ html, body {
 .profile-action-buttons .danger:hover { background: var(--coral-dark); border-color: var(--coral-dark); }
 
 /* ─── AUTH PAGE ──────────────────────────────────────────── */
+/* Antes usaba un verde-amarillo que rompía con el resto de la app.
+   Ahora usa la misma familia teal para mantener identidad visual. */
 .voomy-login-page {
   width: 100%;
   min-height: 100vh;
-  background: #ffffff;
+  background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
   position: relative;
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  gap: 22px;
 
-  padding-top: 70px;
+  padding: 40px 20px;
 }
 
 .voomy-logo {
-  position: absolute;
-  top: 18px;
-  left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+
+  max-width: 420px;
+  width: 100%;
 }
 
 .voomy-logo img {
@@ -968,12 +997,50 @@ html, body {
   object-fit: contain;
 }
 
+/* ── Banner descriptivo de la app, dentro del bloque de marca ── */
+.login-app-description {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  width: 100%;
+  padding: 14px 18px;
+
+  color: var(--teal-text-on-light);
+  background-color: var(--teal-light);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.login-app-description svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 18px;
+  color: var(--teal-dark);
+}
+
+.login-app-description p {
+  margin: 0;
+  color: var(--teal-text-on-light);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+}
+
 .voomy-login-container {
   width: 420px;
+  max-width: 100%;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 34px 30px;
+  box-shadow: var(--shadow-2);
 }
 
 .voomy-mascot {
@@ -990,17 +1057,44 @@ html, body {
   font-family: var(--font-body);
   font-size: 18px;
   font-weight: 400;
-  color: #222;
+  color: var(--ink);
 
   text-align: center;
   margin-bottom: 24px;
 }
 
-.voomy-login-container input {
-  width: 200px;
-  height: 42px;
+/* ── Etiqueta "aplicación exclusiva para..." dentro de la tarjeta ── */
+.login-service-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 
-  border: 1px solid #cfd6dd;
+  width: 100%;
+  margin: 0 0 20px;
+  padding: 10px 16px;
+
+  color: var(--teal-text-on-light);
+  background-color: var(--teal-light);
+
+  border-radius: var(--radius-sm);
+
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.login-service-label svg {
+  flex-shrink: 0;
+  color: var(--teal-dark);
+}
+
+.voomy-login-container input {
+  width: 100%;
+  max-width: 280px;
+  height: 44px;
+
+  border: 1px solid var(--border-strong);
   border-radius: 999px;
 
   padding: 0 18px;
@@ -1010,24 +1104,27 @@ html, body {
   font-family: var(--font-body);
 
   outline: none;
-  background: #ffffff;
+  background: var(--surface-alt);
 
   transition: var(--ease);
 }
 
 .voomy-login-container input:focus {
-  border-color: #cde86d;
+  border-color: var(--teal);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--teal-light);
 }
 
 .voomy-login-container button {
-  width: 200px;
-  height: 42px;
+  width: 100%;
+  max-width: 280px;
+  height: 44px;
 
   border: none;
   border-radius: 999px;
 
-  background: #e8f5a8;
-  color: #000;
+  background: var(--teal-dark);
+  color: #ffffff;
 
   font-size: 15px;
   font-weight: 500;
@@ -1037,32 +1134,35 @@ html, body {
   transition: var(--ease);
 
   margin-top: 2px;
+  box-shadow: 0 6px 16px rgba(3, 105, 161, 0.25);
 }
 
 .voomy-login-container button:hover {
-  background: #dff08a;
+  background: var(--teal-darker);
+  transform: translateY(-1px);
 }
 
 .register-text {
   margin-top: 12px;
   font-size: 14px;
-  color: #222;
+  color: var(--ink-soft);
 }
 
 .register-text a {
-  color: #3b82f6;
+  color: var(--teal-dark);
   text-decoration: underline;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .auth-error {
-  width: 200px;
+  width: 100%;
+  max-width: 280px;
   margin-bottom: 12px;
 
   padding: 10px;
 
-  background: #ffe9e9;
-  color: #d62828;
+  background: var(--coral-light);
+  color: var(--coral-dark);
 
   border-radius: 10px;
 
@@ -1075,18 +1175,25 @@ html, body {
 @media (max-width: 768px) {
 
   .voomy-login-page {
-    padding: 30px 20px;
-    justify-content: center;
+    padding: 28px 16px;
+    gap: 18px;
   }
 
   .voomy-logo {
-    position: static;
-    margin-bottom: 25px;
-    align-self: flex-start;
+    gap: 12px;
+  }
+
+  .login-app-description {
+    padding: 12px 14px;
+  }
+
+  .login-app-description p {
+    font-size: 13px;
   }
 
   .voomy-login-container {
     width: 100%;
+    padding: 26px 20px;
   }
 
   .voomy-mascot img {
@@ -1096,6 +1203,10 @@ html, body {
   .voomy-login-container h2 {
     font-size: 16px;
     margin-bottom: 20px;
+  }
+
+  .login-service-label {
+    font-size: 12px;
   }
 
   .voomy-login-container input,
@@ -1235,7 +1346,7 @@ html, body {
 .favorito-btn {
   border: 1px solid var(--amber);
   background: var(--amber-light);
-  color: var(--amber-dark);
+  color: var(--amber-text-on-light);
   padding: 7px 14px;
   border-radius: var(--radius-pill);
   cursor: pointer;
@@ -1264,6 +1375,547 @@ html, body {
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   RESPUESTA VISUAL DE RUTAS
+========================================================= */
+
+.route-response-card {
+  width: min(100%, 650px);
+  background: #ffffff;
+  border: 1px solid #dce5ec;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(30, 55, 75, 0.08);
+  color: #243746;
+}
+
+.route-response-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e8eef3;
+}
+
+.route-main-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: #e9f3fa;
+  color: #176b9c;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.route-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.route-header-info strong {
+  font-size: 16px;
+  color: #1f3342;
+}
+
+.route-header-info span {
+  font-size: 13px;
+  color: #738391;
+}
+
+
+/* RESUMEN DE PASOS */
+
+.route-steps-summary {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 18px 0;
+  overflow-x: auto;
+}
+
+.route-segment-group {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.route-mini-step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  color: #4e6170;
+  font-size: 13px;
+}
+
+.route-mini-step.transfer {
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  border-radius: 50%;
+  background: #eef3f7;
+  color: #516b7e;
+  flex-shrink: 0;
+}
+
+.route-arrow {
+  flex-shrink: 0;
+  color: #8494a0;
+  font-size: 11px;
+}
+
+.route-line-badge {
+  padding: 5px 9px;
+  border-radius: 7px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+
+/* ORIGEN Y DESTINO */
+
+.route-location {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #f5f8fb;
+}
+
+.route-location > svg {
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.route-origin {
+  color: #19734d;
+}
+
+.route-destination {
+  color: #c13a35;
+}
+
+.route-location div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.route-location span {
+  font-size: 12px;
+  color: #7b8994;
+}
+
+.route-location strong {
+  font-size: 14px;
+  color: #263946;
+}
+
+
+/* DETALLE DE SEGMENTOS */
+
+.route-segment-details {
+  margin: 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.route-segment-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.route-detail-row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 82px;
+  padding: 14px 12px 14px 20px;
+  border-radius: 14px;
+  background: #f9fbfc;
+  overflow: hidden;
+}
+
+.route-color-line {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 6px;
+  border-radius: 10px;
+}
+
+.route-detail-icon-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.route-detail-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.route-detail-text strong {
+  color: #213746;
+  font-size: 14px;
+}
+
+.route-detail-text span {
+  color: #748491;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.route-detail-text span b {
+  color: #455d6d;
+}
+
+
+/* TRANSBORDO */
+
+.route-transfer-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 0 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #fff8e8;
+  color: #966d16;
+}
+
+.route-transfer-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #fce7ac;
+  flex-shrink: 0;
+}
+
+.route-transfer-row div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.route-transfer-row strong {
+  font-size: 12px;
+}
+
+.route-transfer-row span {
+  color: #8e7a50;
+  font-size: 11px;
+}
+
+
+/* PIE DE LA RESPUESTA */
+
+.route-summary-footer {
+  margin-top: 14px;
+  padding-top: 13px;
+  border-top: 1px solid #e5edf2;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #657785;
+  font-size: 13px;
+}
+
+.route-summary-footer strong {
+  color: #243746;
+}
+
+
+/* BOTÓN DE ENVÍO */
+
+.sending-loader {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+  .route-response-card {
+    width: 100%;
+    padding: 14px;
+    border-radius: 17px;
+  }
+
+  .route-main-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .route-header-info strong {
+    font-size: 14px;
+  }
+
+  .route-header-info span {
+    font-size: 11px;
+  }
+
+  .route-steps-summary {
+    gap: 5px;
+    padding: 14px 0;
+  }
+
+  .route-mini-step span:not(.route-line-badge) {
+    display: none;
+  }
+
+  .route-line-badge {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .route-detail-row {
+    padding: 12px 8px 12px 17px;
+  }
+
+  .route-detail-icon-box {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+  }
+
+  .route-detail-text strong {
+    font-size: 12px;
+  }
+
+  .route-detail-text span {
+    font-size: 11px;
+  }
+
+  .route-location strong {
+    font-size: 12px;
+  }
+
+  .route-transfer-row {
+    margin: 0;
+  }
+}
+
+/* =========================================================
+   TARJETA DE RUTA SIN DESPLAZAMIENTO HORIZONTAL
+========================================================= */
+
+.chat-messages {
+  width: 100%;
+  max-width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.message-row {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.message-row.bot {
+  align-items: flex-start;
+}
+
+.route-response-card {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 14px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Resumen superior de caminar, líneas y transbordos */
+
+.route-steps-summary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 12px 0;
+  overflow-x: hidden;
+}
+
+.route-segment-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  min-width: 0;
+}
+
+.route-mini-step {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  font-size: 12px;
+}
+
+.route-line-badge {
+  display: inline-block;
+  max-width: 145px;
+  padding: 5px 8px;
+  border-radius: 7px;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-align: center;
+}
+
+.route-arrow {
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+/* Punto de salida y destino */
+
+.route-location {
+  width: 100%;
+  min-width: 0;
+  padding: 11px 12px;
+}
+
+.route-location div {
+  min-width: 0;
+}
+
+.route-location strong {
+  display: block;
+  max-width: 100%;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+/* Detalle de las líneas */
+
+.route-detail-row {
+  width: 100%;
+  min-width: 0;
+  min-height: auto;
+  padding: 12px 10px 12px 18px;
+}
+
+.route-detail-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.route-detail-text strong,
+.route-detail-text span {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.route-detail-text strong {
+  font-size: 13px;
+}
+
+.route-detail-text span {
+  font-size: 11px;
+}
+
+.route-transfer-row {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 9px 10px;
+}
+
+.route-transfer-row div:last-child {
+  min-width: 0;
+}
+
+.route-transfer-row strong,
+.route-transfer-row span {
+  overflow-wrap: anywhere;
+}
+
+/* Pantallas pequeñas */
+
+@media (max-width: 768px) {
+  .route-response-card {
+    padding: 11px;
+  }
+
+  .route-response-header {
+    gap: 9px;
+    padding-bottom: 10px;
+  }
+
+  .route-main-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 15px;
+  }
+
+  .route-header-info {
+    min-width: 0;
+  }
+
+  .route-header-info strong {
+    font-size: 12px;
+    overflow-wrap: anywhere;
+  }
+
+  .route-header-info span {
+    font-size: 10px;
+  }
+
+  .route-line-badge {
+    max-width: 100px;
+    font-size: 9px;
+    padding: 4px 6px;
+  }
+
+  .route-mini-step {
+    font-size: 10px;
+  }
+
+  .route-detail-icon-box {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+
+  .route-detail-text strong {
+    font-size: 11px;
+  }
+
+  .route-detail-text span {
+    font-size: 10px;
+  }
 }
 
 /* ─── RESPONSIVE CELULAR (<= 768px) ──────────────────────── */
@@ -1593,4 +2245,338 @@ html, body {
   .modal-card .modal-actions {
     flex-direction: column;
   }
+}
+
+/* ─── INFORMATION MODAL (Bienvenido a Voomy) ─────────────── */
+/* Antes usaba verdes (#198754) que no pertenecían a la paleta.
+   Ahora usa el mismo teal que el resto de la app. */
+.information-modal {
+  position: relative;
+
+  width: min(92%, 590px);
+  max-height: 90vh;
+  overflow-y: auto;
+
+  padding: 32px;
+
+  background-color: var(--surface);
+  border-radius: 22px;
+
+  box-shadow: var(--shadow-3);
+
+  text-align: center;
+
+  animation:
+    informationModalEnter
+    0.25s ease;
+}
+
+@keyframes informationModalEnter {
+  from {
+    opacity: 0;
+    transform:
+      translateY(18px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+.information-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+
+  width: 36px;
+  height: 36px;
+
+  border: none;
+  border-radius: 50%;
+
+  color: var(--ink-soft);
+  background-color: var(--surface-alt);
+
+  font-size: 25px;
+  line-height: 1;
+
+  cursor: pointer;
+  transition: var(--ease);
+}
+
+.information-modal-close:hover {
+  color: #ffffff;
+  background-color: var(--teal-dark);
+}
+
+.information-modal-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 76px;
+  height: 76px;
+
+  margin: 0 auto 15px;
+
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+
+  border-radius: 22px;
+
+  font-size: 35px;
+
+  box-shadow: 0 10px 24px rgba(3, 105, 161, 0.25);
+}
+
+.information-modal-label {
+  display: inline-block;
+
+  margin-bottom: 6px;
+
+  color: var(--teal-dark);
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.information-modal h2 {
+  margin: 0 0 12px;
+
+  color: var(--ink);
+
+  font-size: 27px;
+  font-family: var(--font-display);
+}
+
+.information-modal-description {
+  max-width: 500px;
+
+  margin: 0 auto 24px;
+
+  color: var(--ink-soft);
+
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.information-modal-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  text-align: left;
+}
+
+.information-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+
+  padding: 15px;
+
+  background-color: var(--teal-light);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  transition: var(--ease);
+}
+
+.information-option:hover {
+  border-color: var(--teal);
+  transform: translateX(2px);
+}
+
+.information-option > svg {
+  flex-shrink: 0;
+
+  margin-top: 3px;
+
+  color: var(--teal-dark);
+
+  font-size: 23px;
+}
+
+.information-option div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.information-option strong {
+  color: var(--ink);
+
+  font-size: 14px;
+}
+
+.information-option span {
+  color: var(--ink-soft);
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.information-modal-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  margin-top: 18px;
+  padding: 13px 15px;
+
+  color: var(--amber-text-on-light);
+  background-color: var(--amber-light);
+
+  border: 1px solid #f1df98;
+  border-radius: 12px;
+
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.information-modal-note svg {
+  flex-shrink: 0;
+
+  margin-top: 2px;
+}
+
+.information-modal-button {
+  width: 100%;
+
+  margin-top: 20px;
+  padding: 13px 20px;
+
+  border: none;
+  border-radius: 12px;
+
+  color: #ffffff;
+  background-color: var(--teal-dark);
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: var(--ease);
+}
+
+.information-modal-button:hover {
+  background-color: var(--teal-darker);
+}
+
+@media (max-width: 600px) {
+  .information-modal {
+    padding:
+      28px 18px
+      20px;
+  }
+
+  .information-modal h2 {
+    font-size: 22px;
+  }
+
+  .information-modal-description {
+    font-size: 14px;
+  }
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  width: 100%;
+  padding: 24px 16px 10px;
+}
+
+.sidebar-link {
+  display: block;
+  width: 100%;
+
+  text-decoration: none;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+
+  width: 100%;
+  min-height: 54px;
+
+  padding: 13px 16px;
+
+  border: none;
+  border-radius: 14px;
+
+  color: #d8edf8;
+  background-color: transparent;
+
+  font-family: inherit;
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.sidebar-item:hover {
+  color: #ffffff;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.12
+  );
+
+  transform: translateX(3px);
+}
+
+.sidebar-item.active {
+  color: #0d6ea8;
+  background-color: #eef8ff;
+
+  box-shadow:
+    0 6px 16px
+    rgba(0, 0, 0, 0.12);
+}
+
+.sidebar-item svg {
+  flex-shrink: 0;
+
+  width: 25px;
+  height: 25px;
+
+  font-size: 25px;
+}
+
+.sidebar-item span {
+  flex: 1;
+
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.conversation-list {
+  margin-top: 26px;
+}
+
+.conversation-list h4 {
+  margin-bottom: 18px;
+
+  color: #b9dced;
+
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
 }
