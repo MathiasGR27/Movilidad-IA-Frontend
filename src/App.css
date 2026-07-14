@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Poppins:wght@300;400;500;600&display=swap');
 
-/* ─── DESIGN TOKENS ─────────────────────────────────────── */
+/* =========================================================
+   DESIGN TOKENS
+========================================================= */
 :root {
   --bg: #f2f6f8;
   --surface: #ffffff;
@@ -19,16 +21,21 @@
   --teal-light: #e0f2fe;
   --teal-text-on-light: #075985;
 
-  /* AMBER: antes era idéntico a teal-dark (no aportaba contraste).
-     Ahora tiene tono propio, cálido, para favoritos y acentos secundarios. */
-  --amber: #069ad9;
-  --amber-dark: #0981b4;
-  --amber-light: #e2f9fe;
-  --amber-text-on-light: #0e6d92f6;
+  /* AMBER: color propio para favoritos/acentos secundarios.
+     (Antes apuntaba a un tono azul casi idéntico al teal, lo que
+     hacía que "favoritos" se confundiera visualmente con acciones
+     primarias. Ahora es un dorado cálido real.) */
+  --amber: #29aef0;
+  --amber-dark: #0975b4;
+  --amber-light: #c7e2fe;
+  --amber-text-on-light: #0e5b92;
 
-  --coral: #2e5ac1;
-  --coral-dark: #1c3896;
-  --coral-light: #e7f2fa;
+  /* CORAL: color de peligro/error. (Antes era azul, lo que rompía
+     la convención visual de "rojo = eliminar/error". Ahora es un
+     rojo-coral suave, consistente con el resto de la paleta pastel.) */
+  --coral: #e0645a;
+  --coral-dark: #b8453d;
+  --coral-light: #fbe9e7;
 
   --success-bg: #e0f2fe;
   --success-text: #0c4a6e;
@@ -48,25 +55,26 @@
   --ease: 0.2s ease;
 }
 
-/* ─── RESET ─────────────────────────────────────────────── */
+/* =========================================================
+   RESET
+========================================================= */
 *, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ─── SCROLLBARS INVISIBLES (global) ────────────────────── */
+/* Scrollbars invisibles en toda la app */
 * {
-  scrollbar-width: none;       /* Firefox */
-  -ms-overflow-style: none;    /* IE / viejo Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 *::-webkit-scrollbar {
   width: 0;
   height: 0;
-  display: none;               /* Chrome / Safari / nuevo Edge */
+  display: none;
 }
 
-/* ─── BASE ───────────────────────────────────────────────── */
 html, body {
   width: 100%;
   height: 100%;
@@ -82,7 +90,119 @@ html, body {
   overflow: hidden;
 }
 
-/* ─── LAYOUT ─────────────────────────────────────────────── */
+/* Todo elemento interactivo hereda tipografía y pierde el highlight azul de móvil */
+button, input, textarea, select {
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* Foco accesible consistente para toda la app */
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   BOTONES — patrón compartido
+   (Agrupa selectores que antes repetían la misma regla
+   "fondo teal-dark, texto blanco, hover teal-darker".)
+========================================================= */
+.chat-header button,
+.edit-profile-btn,
+.history-btn,
+.voomy-login-container button,
+.modal-card .modal-actions button,
+.information-modal-button,
+.input-box button,
+.mensaje-modal button {
+  border: none;
+  background: var(--teal-dark);
+  color: #ffffff;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  transition: background var(--ease), transform var(--ease);
+}
+
+.chat-header button:hover,
+.edit-profile-btn:hover,
+.history-btn:hover,
+.voomy-login-container button:hover,
+.modal-card .modal-actions button:hover,
+.information-modal-button:hover,
+.input-box button:hover,
+.mensaje-modal button:hover {
+  background: var(--teal-darker);
+}
+
+.chat-header button:active,
+.edit-profile-btn:active,
+.history-btn:active,
+.voomy-login-container button:active,
+.modal-card .modal-actions button:active,
+.information-modal-button:active,
+.input-box button:active,
+.mensaje-modal button:active {
+  transform: scale(0.97);
+}
+
+/* Botones "outline" secundarios: fondo blanco, borde suave, hover teal claro */
+.volver-btn,
+.ver-btn,
+.profile-action-buttons button {
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 11px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  transition: var(--ease);
+}
+
+.volver-btn:hover,
+.ver-btn:hover,
+.profile-action-buttons button:hover {
+  background: var(--teal-light);
+  border-color: var(--teal);
+  color: var(--teal-text-on-light);
+}
+
+.volver-btn:active,
+.ver-btn:active,
+.profile-action-buttons button:active {
+  transform: scale(0.98);
+}
+
+/* Botones destructivos, todos comparten la misma paleta coral */
+.btn-eliminar,
+.modal-card .modal-actions button.danger,
+.profile-action-buttons .danger {
+  background: var(--coral);
+  color: #ffffff;
+  border-color: var(--coral);
+}
+
+.btn-eliminar:hover,
+.modal-card .modal-actions button.danger:hover,
+.profile-action-buttons .danger:hover {
+  background: var(--coral-dark);
+  border-color: var(--coral-dark);
+}
+
+/* =========================================================
+   LAYOUT
+========================================================= */
 .layout {
   width: 100%;
   height: 100vh;
@@ -106,17 +226,72 @@ html, body {
   transition: var(--ease);
 }
 
-/* Overlay oscuro para cerrar el sidebar en móvil */
 .sidebar-overlay {
   display: none;
 }
 
-/* En desktop el botón hamburguesa NO se muestra */
 .logo-button {
   display: none;
 }
 
-/* ─── NAV ICONS ──────────────────────────────────────────── */
+/* Menú de navegación estilo lista (Principal / Mapa / Información / Crear chat) */
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 24px 16px 10px;
+}
+
+.sidebar-link {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  width: 100%;
+  min-height: 54px;
+  padding: 13px 16px;
+  border: none;
+  border-radius: 14px;
+  color: #d8edf8;
+  background-color: transparent;
+  transition: background-color var(--ease), color var(--ease), transform var(--ease);
+}
+
+.sidebar-item:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.12);
+  transform: translateX(3px);
+}
+
+.sidebar-item.active {
+  color: var(--amber-dark);
+  background-color: var(--amber-light);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.sidebar-item svg {
+  flex-shrink: 0;
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+}
+
+.sidebar-item span {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* Menú de navegación alterno, solo íconos (usado en variantes compactas) */
 .nav-icons {
   display: flex;
   flex-direction: column;
@@ -132,7 +307,6 @@ html, body {
   background: transparent;
   color: rgba(255, 255, 255, 0.75);
   font-size: 22px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -164,7 +338,6 @@ html, body {
   border-radius: var(--radius-sm);
   background: transparent;
   color: #ffffff;
-  cursor: pointer;
   font-size: 18px;
   transition: var(--ease);
 }
@@ -177,16 +350,17 @@ html, body {
 .conversation-list {
   flex: 1;
   overflow-y: auto;
-  margin-top: 10px;
+  margin-top: 24px;
 }
 
 .conversation-list h4 {
-  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 16px;
+  color: #b9dced;
   font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin-bottom: 12px;
+  text-align: center;
 }
 
 .conversation-btn {
@@ -196,7 +370,6 @@ html, body {
   border-radius: var(--radius-sm);
   padding: 12px;
   margin-bottom: 8px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -236,7 +409,6 @@ html, body {
   border: none;
   background: transparent;
   color: rgba(255, 255, 255, 0.45);
-  cursor: pointer;
   font-size: 13px;
   padding: 4px 6px;
   border-radius: 8px;
@@ -249,7 +421,7 @@ html, body {
 
 .delete-chat:hover {
   color: var(--coral-light);
-  background: rgba(193, 80, 46, 0.35);
+  background: rgba(224, 100, 90, 0.35);
 }
 
 /* ─── MAIN CONTENT ───────────────────────────────────────── */
@@ -294,7 +466,6 @@ html, body {
   border: 1px solid var(--border);
   border-radius: 50%;
   background: var(--surface-alt);
-  cursor: pointer;
   font-size: 1.8rem;
   color: var(--teal);
   transition: var(--ease);
@@ -347,7 +518,6 @@ html, body {
   padding: 10px 12px;
   text-align: left;
   border-radius: var(--radius-sm);
-  cursor: pointer;
   font-size: 14px;
   transition: var(--ease);
 }
@@ -362,7 +532,14 @@ html, body {
   font-weight: 500;
 }
 
-/* ─── CONTENT GRID ───────────────────────────────────────── */
+.profile-dropdown .logout:hover {
+  background: var(--coral-light);
+  color: var(--coral-dark);
+}
+
+/* =========================================================
+   CHAT
+========================================================= */
 .content {
   display: grid;
   grid-template-columns: 1.3fr 1fr;
@@ -373,7 +550,6 @@ html, body {
   min-height: 0;
 }
 
-/* ─── CHAT SECTION ───────────────────────────────────────── */
 .chat-section {
   position: relative;
   background: var(--surface);
@@ -403,28 +579,20 @@ html, body {
 }
 
 .chat-header button {
-  border: none;
-  background: var(--teal-dark);
-  color: #ffffff;
   padding: 9px 14px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
   font-size: 13px;
-  font-weight: 500;
-  transition: var(--ease);
-}
-
-.chat-header button:hover {
-  background: var(--teal-darker);
 }
 
 .chat-messages {
   display: flex;
   flex-direction: column;
   gap: 18px;
-  overflow-y: auto;
+  width: 100%;
+  max-width: 100%;
   flex: 1;
   min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding-right: 8px;
 }
 
@@ -432,11 +600,13 @@ html, body {
   display: flex;
   align-items: flex-end;
   gap: 10px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
-.message-row.user {
-  justify-content: flex-end;
-}
+.message-row.user { justify-content: flex-end; }
+.message-row.bot  { align-items: flex-start; }
 
 .avatar {
   width: 38px;
@@ -495,7 +665,6 @@ html, body {
   background: var(--teal-dark);
   color: #ffffff;
   font-size: 24px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -509,15 +678,20 @@ html, body {
   transform: scale(1.05);
 }
 
+.new-chat-floating:active {
+  transform: scale(0.96);
+}
+
 /* ─── INPUT ──────────────────────────────────────────────── */
 .input-box {
   flex-shrink: 0;
   display: flex;
   align-items: center;
+  gap: 12px;
   background: var(--surface-alt);
   border: 1px solid var(--border);
   border-radius: var(--radius-pill);
-  padding: 6px 6px 6px 18px;
+  padding: 6px 6px 6px 10px;
   transition: var(--ease);
 }
 
@@ -527,8 +701,24 @@ html, body {
   box-shadow: 0 0 0 3px var(--teal-light);
 }
 
+/* Ícono circular a la izquierda (ej. "navegación"/origen).
+   Ajusta el nombre de clase si tu componente usa otro. */
+.input-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--teal-darker);
+  color: #ffffff;
+  font-size: 14px;
+}
+
 .input-box input {
   flex: 1;
+  min-width: 0;
   border: none;
   outline: none;
   background: transparent;
@@ -536,20 +726,16 @@ html, body {
   color: var(--ink);
 }
 
+.input-box input::placeholder {
+  color: var(--ink-muted);
+}
+
 .input-box button {
   width: 42px;
   height: 42px;
-  border: none;
   border-radius: 50%;
-  background: var(--teal-dark);
-  color: #ffffff;
-  cursor: pointer;
   font-size: 16px;
-  transition: var(--ease);
-}
-
-.input-box button:hover {
-  background: var(--teal-darker);
+  flex-shrink: 0;
 }
 
 /* ─── MAP ────────────────────────────────────────────────── */
@@ -600,27 +786,9 @@ html, body {
   min-height: 0;
 }
 
-.volver-btn,
-.ver-btn {
-  border: 1px solid var(--border-strong);
-  background: var(--surface);
-  color: var(--ink);
-  padding: 11px 18px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: var(--ease);
-}
-
-.volver-btn:hover,
-.ver-btn:hover {
-  background: var(--teal-light);
-  border-color: var(--teal);
-  color: var(--teal-text-on-light);
-}
-
-/* ─── MODALES ────────────────────────────────────────────── */
+/* =========================================================
+   MODALES
+========================================================= */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -682,7 +850,6 @@ html, body {
   padding: 10px 18px;
   border-radius: var(--radius-sm);
   border: none;
-  cursor: pointer;
   font-weight: 500;
   font-size: 14px;
   transition: var(--ease);
@@ -698,13 +865,10 @@ html, body {
   background-color: var(--border);
 }
 
-.btn-eliminar {
-  background-color: var(--coral);
-  color: #ffffff;
-}
-
-.btn-eliminar:hover {
-  background-color: var(--coral-dark);
+/* .btn-eliminar comparte estilo con los demás botones destructivos —
+   ver bloque "BOTONES — patrón compartido" al inicio del archivo */
+.btn-eliminar:active {
+  transform: scale(0.97);
 }
 
 /* ─── MENSAJE MODAL ──────────────────────────────────────── */
@@ -722,23 +886,62 @@ html, body {
 .mensaje-modal.error   h3 { color: var(--coral-dark); margin-bottom: 10px; }
 
 .mensaje-modal button {
-  border: none;
-  background: var(--teal-dark);
-  color: #ffffff;
   padding: 11px 18px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-weight: 500;
   font-size: 14px;
-  transition: var(--ease);
   min-width: 120px;
 }
 
-.mensaje-modal button:hover {
-  background: var(--teal-darker);
+/* ─── MODAL CARD (formularios de edición) ────────────────── */
+.modal-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 34px 30px;
+  width: 90%;
+  max-width: 440px;
+  box-shadow: var(--shadow-3);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: slideUp 0.22s ease;
+  position: relative;
+  z-index: 100000;
 }
 
-/* ─── PAGES CON SCROLL PROPIO ────────────────────────────── */
+.modal-card h3 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.modal-card input {
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+  color: var(--ink);
+  padding: 13px 16px;
+  border-radius: var(--radius-sm);
+  outline: none;
+  font-size: 14px;
+  transition: var(--ease);
+  width: 100%;
+}
+
+.modal-card input:focus {
+  background: var(--surface);
+  border-color: var(--teal);
+}
+
+.modal-card .modal-actions button {
+  flex: 1;
+  padding: 13px;
+  font-size: 14px;
+}
+
+/* =========================================================
+   PAGES CON SCROLL PROPIO
+========================================================= */
 .profile-page,
 .historial-page,
 .detalle-page {
@@ -778,7 +981,6 @@ html, body {
   gap: 24px;
 }
 
-/* ─── SHARED CARDS ───────────────────────────────────────── */
 .profile-card-main,
 .profile-section-card,
 .profile-actions-card,
@@ -817,6 +1019,7 @@ html, body {
   color: var(--ink);
   font-size: 24px;
 }
+
 .profile-role { color: var(--ink-muted); margin-top: 4px; }
 
 .profile-status {
@@ -852,17 +1055,8 @@ html, body {
 .edit-profile-btn {
   width: 100%;
   margin-top: 26px;
-  border: none;
-  background: var(--teal-dark);
-  color: #ffffff;
   padding: 13px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-weight: 500;
-  transition: var(--ease);
 }
-
-.edit-profile-btn:hover { background: var(--teal-darker); }
 
 .profile-details {
   display: flex;
@@ -906,7 +1100,7 @@ html, body {
   color: var(--ink);
   margin-top: 8px;
 }
-.stat-card p  { color: var(--ink-muted); font-size: 13px; }
+.stat-card p { color: var(--ink-muted); font-size: 13px; }
 
 .profile-section-card,
 .profile-actions-card {
@@ -948,36 +1142,19 @@ html, body {
   justify-content: center;
 }
 
-.profile-action-buttons button {
-  border: 1px solid var(--border-strong);
-  background: var(--surface);
-  color: var(--ink);
-  padding: 13px 18px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-weight: 500;
-  transition: var(--ease);
-}
-
-.profile-action-buttons button:hover { background: var(--teal-light); border-color: var(--teal); color: var(--teal-text-on-light); }
-.profile-action-buttons .danger      { background: var(--coral); color: #ffffff; border-color: var(--coral); }
-.profile-action-buttons .danger:hover { background: var(--coral-dark); border-color: var(--coral-dark); }
-
-/* ─── AUTH PAGE ──────────────────────────────────────────── */
-/* Antes usaba un verde-amarillo que rompía con el resto de la app.
-   Ahora usa la misma familia teal para mantener identidad visual. */
+/* =========================================================
+   AUTH PAGE
+========================================================= */
 .voomy-login-page {
   width: 100%;
   min-height: 100vh;
   background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
   position: relative;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 22px;
-
   padding: 40px 20px;
 }
 
@@ -986,7 +1163,6 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: 14px;
-
   max-width: 420px;
   width: 100%;
 }
@@ -997,18 +1173,14 @@ html, body {
   object-fit: contain;
 }
 
-/* ── Banner descriptivo de la app, dentro del bloque de marca ── */
 .login-app-description {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-
   width: 100%;
   padding: 14px 18px;
-
   color: var(--teal-text-on-light);
   background-color: var(--teal-light);
-
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
 }
@@ -1021,7 +1193,6 @@ html, body {
 }
 
 .login-app-description p {
-  margin: 0;
   color: var(--teal-text-on-light);
   font-size: 14px;
   line-height: 1.5;
@@ -1031,11 +1202,9 @@ html, body {
 .voomy-login-container {
   width: 420px;
   max-width: 100%;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -1054,31 +1223,24 @@ html, body {
 }
 
 .voomy-login-container h2 {
-  font-family: var(--font-body);
-  font-size: 18px;
   font-weight: 400;
+  font-size: 18px;
   color: var(--ink);
-
   text-align: center;
   margin-bottom: 24px;
 }
 
-/* ── Etiqueta "aplicación exclusiva para..." dentro de la tarjeta ── */
 .login-service-label {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-
   width: 100%;
   margin: 0 0 20px;
   padding: 10px 16px;
-
   color: var(--teal-text-on-light);
   background-color: var(--teal-light);
-
   border-radius: var(--radius-sm);
-
   font-size: 13px;
   line-height: 1.4;
   text-align: center;
@@ -1093,19 +1255,13 @@ html, body {
   width: 100%;
   max-width: 280px;
   height: 44px;
-
   border: 1px solid var(--border-strong);
   border-radius: 999px;
-
   padding: 0 18px;
   margin-bottom: 14px;
-
   font-size: 14px;
-  font-family: var(--font-body);
-
   outline: none;
   background: var(--surface-alt);
-
   transition: var(--ease);
 }
 
@@ -1119,27 +1275,10 @@ html, body {
   width: 100%;
   max-width: 280px;
   height: 44px;
-
-  border: none;
   border-radius: 999px;
-
-  background: var(--teal-dark);
-  color: #ffffff;
-
   font-size: 15px;
-  font-weight: 500;
-  font-family: var(--font-body);
-
-  cursor: pointer;
-  transition: var(--ease);
-
   margin-top: 2px;
   box-shadow: 0 6px 16px rgba(3, 105, 161, 0.25);
-}
-
-.voomy-login-container button:hover {
-  background: var(--teal-darker);
-  transform: translateY(-1px);
 }
 
 .register-text {
@@ -1158,69 +1297,17 @@ html, body {
   width: 100%;
   max-width: 280px;
   margin-bottom: 12px;
-
   padding: 10px;
-
   background: var(--coral-light);
   color: var(--coral-dark);
-
   border-radius: 10px;
-
   text-align: center;
   font-size: 13px;
 }
 
-/* Responsive */
-
-@media (max-width: 768px) {
-
-  .voomy-login-page {
-    padding: 28px 16px;
-    gap: 18px;
-  }
-
-  .voomy-logo {
-    gap: 12px;
-  }
-
-  .login-app-description {
-    padding: 12px 14px;
-  }
-
-  .login-app-description p {
-    font-size: 13px;
-  }
-
-  .voomy-login-container {
-    width: 100%;
-    padding: 26px 20px;
-  }
-
-  .voomy-mascot img {
-    width: 120px;
-  }
-
-  .voomy-login-container h2 {
-    font-size: 16px;
-    margin-bottom: 20px;
-  }
-
-  .login-service-label {
-    font-size: 12px;
-  }
-
-  .voomy-login-container input,
-  .voomy-login-container button {
-    width: 100%;
-    max-width: 320px;
-  }
-
-  .auth-error {
-    width: 100%;
-    max-width: 320px;
-  }
-}
-/* ─── HISTORIAL ──────────────────────────────────────────── */
+/* =========================================================
+   HISTORIAL
+========================================================= */
 .historial-page {
   padding: 36px;
   background: var(--bg);
@@ -1269,18 +1356,11 @@ html, body {
   width: 100%;
   margin-top: 10px;
   padding: 11px;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: var(--teal-dark);
-  color: #ffffff;
-  cursor: pointer;
-  font-weight: 500;
-  transition: var(--ease);
 }
 
-.history-btn:hover { background: var(--teal-darker); }
-
-/* ─── DETALLE ────────────────────────────────────────────── */
+/* =========================================================
+   DETALLE
+========================================================= */
 .detalle-page {
   max-width: 1200px;
   margin: 0 auto;
@@ -1342,53 +1422,195 @@ html, body {
   font-size: 14px;
 }
 
-/* ─── FAVORITOS ──────────────────────────────────────────── */
+/* =========================================================
+   FAVORITOS
+========================================================= */
 .favorito-btn {
   border: 1px solid var(--amber);
   background: var(--amber-light);
   color: var(--amber-text-on-light);
   padding: 7px 14px;
   border-radius: var(--radius-pill);
-  cursor: pointer;
   font-weight: 500;
   font-size: 13px;
   transition: var(--ease);
 }
 
 .favorito-btn:hover { background: var(--amber); color: #ffffff; }
+.favorito-btn:active { transform: scale(0.96); }
 .favorito-activo    { color: var(--amber-dark); font-weight: 600; }
 
-/* ─── SVG ICON SIZE ──────────────────────────────────────── */
-.logo-button svg,
-.nav-btn svg,
-.auth-btn svg,
-.profile-btn svg {
-  font-size: 1.3rem;
+/* =========================================================
+   INFORMATION MODAL (Bienvenido a Voomy)
+========================================================= */
+.information-modal {
+  position: relative;
+  width: min(92%, 590px);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px;
+  background-color: var(--surface);
+  border-radius: 22px;
+  box-shadow: var(--shadow-3);
+  text-align: center;
+  animation: informationModalEnter 0.25s ease;
 }
 
-/* ─── ANIMATIONS ─────────────────────────────────────────── */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
+.information-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  color: var(--ink-soft);
+  background-color: var(--surface-alt);
+  font-size: 25px;
+  line-height: 1;
+  transition: var(--ease);
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
+.information-modal-close:hover {
+  color: #ffffff;
+  background-color: var(--teal-dark);
+}
+
+.information-modal-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 15px;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+  border-radius: 22px;
+  font-size: 35px;
+  box-shadow: 0 10px 24px rgba(3, 105, 161, 0.25);
+}
+
+.information-modal-label {
+  display: inline-block;
+  margin-bottom: 6px;
+  color: var(--teal-dark);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.information-modal h2 {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-size: 27px;
+  font-family: var(--font-display);
+}
+
+.information-modal-description {
+  max-width: 500px;
+  margin: 0 auto 24px;
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.information-modal-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+.information-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 15px;
+  background-color: var(--teal-light);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  transition: var(--ease);
+}
+
+.information-option:hover {
+  border-color: var(--teal);
+  transform: translateX(2px);
+}
+
+.information-option > svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--teal-dark);
+  font-size: 23px;
+}
+
+.information-option div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.information-option strong { color: var(--ink); font-size: 14px; }
+.information-option span   { color: var(--ink-soft); font-size: 13px; line-height: 1.5; }
+
+.information-modal-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 13px 15px;
+  color: var(--amber-text-on-light);
+  background-color: var(--amber-light);
+  border: 1px solid #f1df98;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.information-modal-note svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.information-modal-button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 13px 20px;
+  font-size: 15px;
+  font-weight: 700;
 }
 
 /* =========================================================
    RESPUESTA VISUAL DE RUTAS
+   (paleta local en variables para no repetir los mismos grises
+   y azules una y otra vez en cada sub-clase)
 ========================================================= */
-
 .route-response-card {
-  width: min(100%, 650px);
-  background: #ffffff;
-  border: 1px solid #dce5ec;
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 8px 24px rgba(30, 55, 75, 0.08);
-  color: #243746;
+  --route-text: #23374a;
+  --route-text-soft: #4e6170;
+  --route-text-muted: #74838f;
+  --route-border: #e2e9ee;
+  --route-surface-soft: #f6f9fb;
+  --route-accent: #176b9c;
+  --route-accent-bg: #e9f3fa;
+  --route-origin: #19734d;
+  --route-destination: #c13a35;
+  --route-transfer-bg: #fff6e4;
+  --route-transfer-chip: #fbe3a6;
+  --route-transfer-text: #8a6a1c;
+
+  width: 100%;
+  max-width: 650px;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--route-border);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: var(--shadow-2);
+  color: var(--route-text);
+  overflow: hidden;
 }
 
 .route-response-header {
@@ -1396,7 +1618,7 @@ html, body {
   align-items: center;
   gap: 14px;
   padding-bottom: 15px;
-  border-bottom: 1px solid #e8eef3;
+  border-bottom: 1px solid var(--route-border);
 }
 
 .route-main-icon {
@@ -1405,8 +1627,8 @@ html, body {
   border-radius: 14px;
   display: grid;
   place-items: center;
-  background: #e9f3fa;
-  color: #176b9c;
+  background: var(--route-accent-bg);
+  color: var(--route-accent);
   font-size: 22px;
   flex-shrink: 0;
 }
@@ -1415,41 +1637,45 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 }
 
 .route-header-info strong {
   font-size: 16px;
-  color: #1f3342;
+  color: var(--route-text);
+  overflow-wrap: anywhere;
 }
 
 .route-header-info span {
   font-size: 13px;
-  color: #738391;
+  color: var(--route-text-muted);
 }
 
-
-/* RESUMEN DE PASOS */
-
+/* Resumen de pasos (caminar / línea / transbordo) */
 .route-steps-summary {
+  width: 100%;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 7px;
-  padding: 18px 0;
-  overflow-x: auto;
+  padding: 12px 0;
 }
 
 .route-segment-group {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 7px;
+  min-width: 0;
 }
 
 .route-mini-step {
   display: flex;
   align-items: center;
   gap: 6px;
+  min-width: 0;
   white-space: nowrap;
-  color: #4e6170;
+  color: var(--route-text-soft);
   font-size: 13px;
 }
 
@@ -1458,36 +1684,41 @@ html, body {
   height: 30px;
   justify-content: center;
   border-radius: 50%;
-  background: #eef3f7;
-  color: #516b7e;
+  background: var(--route-surface-soft);
+  color: var(--route-text-soft);
   flex-shrink: 0;
 }
 
 .route-arrow {
   flex-shrink: 0;
-  color: #8494a0;
+  color: var(--route-text-muted);
   font-size: 11px;
 }
 
 .route-line-badge {
+  display: inline-block;
+  max-width: 145px;
   padding: 5px 9px;
   border-radius: 7px;
   color: #ffffff;
   font-size: 12px;
   font-weight: 700;
-  white-space: nowrap;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
-
-/* ORIGEN Y DESTINO */
-
+/* Origen y destino */
 .route-location {
+  width: 100%;
+  min-width: 0;
   display: flex;
   align-items: flex-start;
   gap: 12px;
   padding: 12px 14px;
   border-radius: 14px;
-  background: #f5f8fb;
+  background: var(--route-surface-soft);
 }
 
 .route-location > svg {
@@ -1495,33 +1726,30 @@ html, body {
   flex-shrink: 0;
 }
 
-.route-origin {
-  color: #19734d;
-}
-
-.route-destination {
-  color: #c13a35;
-}
+.route-origin      { color: var(--route-origin); }
+.route-destination { color: var(--route-destination); }
 
 .route-location div {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
 }
 
 .route-location span {
   font-size: 12px;
-  color: #7b8994;
+  color: var(--route-text-muted);
 }
 
 .route-location strong {
+  display: block;
+  max-width: 100%;
   font-size: 14px;
-  color: #263946;
+  color: var(--route-text);
+  overflow-wrap: anywhere;
 }
 
-
-/* DETALLE DE SEGMENTOS */
-
+/* Detalle de segmentos */
 .route-segment-details {
   margin: 14px 0;
   display: flex;
@@ -1537,13 +1765,14 @@ html, body {
 
 .route-detail-row {
   position: relative;
+  width: 100%;
+  min-width: 0;
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  min-height: 82px;
   padding: 14px 12px 14px 20px;
   border-radius: 14px;
-  background: #f9fbfc;
+  background: var(--route-surface-soft);
   overflow: hidden;
 }
 
@@ -1567,38 +1796,42 @@ html, body {
 }
 
 .route-detail-text {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
 
 .route-detail-text strong {
-  color: #213746;
+  color: var(--route-text);
   font-size: 14px;
+  overflow-wrap: anywhere;
 }
 
 .route-detail-text span {
-  color: #748491;
+  color: var(--route-text-muted);
   font-size: 12px;
   line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .route-detail-text span b {
-  color: #455d6d;
+  color: var(--route-text-soft);
 }
 
-
-/* TRANSBORDO */
-
+/* Transbordo */
 .route-transfer-row {
+  width: 100%;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 11px;
-  margin: 0 10px;
+  margin: 0;
   padding: 10px 12px;
   border-radius: 12px;
-  background: #fff8e8;
-  color: #966d16;
+  background: var(--route-transfer-bg);
+  color: var(--route-transfer-text);
 }
 
 .route-transfer-icon {
@@ -1607,7 +1840,7 @@ html, body {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: #fce7ac;
+  background: var(--route-transfer-chip);
   flex-shrink: 0;
 }
 
@@ -1615,245 +1848,6 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 2px;
-}
-
-.route-transfer-row strong {
-  font-size: 12px;
-}
-
-.route-transfer-row span {
-  color: #8e7a50;
-  font-size: 11px;
-}
-
-
-/* PIE DE LA RESPUESTA */
-
-.route-summary-footer {
-  margin-top: 14px;
-  padding-top: 13px;
-  border-top: 1px solid #e5edf2;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  color: #657785;
-  font-size: 13px;
-}
-
-.route-summary-footer strong {
-  color: #243746;
-}
-
-
-/* BOTÓN DE ENVÍO */
-
-.sending-loader {
-  font-size: 16px;
-  font-weight: 700;
-}
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 768px) {
-  .route-response-card {
-    width: 100%;
-    padding: 14px;
-    border-radius: 17px;
-  }
-
-  .route-main-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
-  }
-
-  .route-header-info strong {
-    font-size: 14px;
-  }
-
-  .route-header-info span {
-    font-size: 11px;
-  }
-
-  .route-steps-summary {
-    gap: 5px;
-    padding: 14px 0;
-  }
-
-  .route-mini-step span:not(.route-line-badge) {
-    display: none;
-  }
-
-  .route-line-badge {
-    max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .route-detail-row {
-    padding: 12px 8px 12px 17px;
-  }
-
-  .route-detail-icon-box {
-    width: 34px;
-    height: 34px;
-    font-size: 15px;
-  }
-
-  .route-detail-text strong {
-    font-size: 12px;
-  }
-
-  .route-detail-text span {
-    font-size: 11px;
-  }
-
-  .route-location strong {
-    font-size: 12px;
-  }
-
-  .route-transfer-row {
-    margin: 0;
-  }
-}
-
-/* =========================================================
-   TARJETA DE RUTA SIN DESPLAZAMIENTO HORIZONTAL
-========================================================= */
-
-.chat-messages {
-  width: 100%;
-  max-width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.message-row {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-}
-
-.message-row.bot {
-  align-items: flex-start;
-}
-
-.route-response-card {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  padding: 14px;
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-/* Resumen superior de caminar, líneas y transbordos */
-
-.route-steps-summary {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 7px;
-  padding: 12px 0;
-  overflow-x: hidden;
-}
-
-.route-segment-group {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 7px;
-  min-width: 0;
-}
-
-.route-mini-step {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  min-width: 0;
-  font-size: 12px;
-}
-
-.route-line-badge {
-  display: inline-block;
-  max-width: 145px;
-  padding: 5px 8px;
-  border-radius: 7px;
-  color: white;
-  font-size: 11px;
-  font-weight: 700;
-
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-  text-align: center;
-}
-
-.route-arrow {
-  font-size: 10px;
-  flex-shrink: 0;
-}
-
-/* Punto de salida y destino */
-
-.route-location {
-  width: 100%;
-  min-width: 0;
-  padding: 11px 12px;
-}
-
-.route-location div {
-  min-width: 0;
-}
-
-.route-location strong {
-  display: block;
-  max-width: 100%;
-  font-size: 13px;
-  overflow-wrap: anywhere;
-}
-
-/* Detalle de las líneas */
-
-.route-detail-row {
-  width: 100%;
-  min-width: 0;
-  min-height: auto;
-  padding: 12px 10px 12px 18px;
-}
-
-.route-detail-text {
-  flex: 1;
-  min-width: 0;
-}
-
-.route-detail-text strong,
-.route-detail-text span {
-  max-width: 100%;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.route-detail-text strong {
-  font-size: 13px;
-}
-
-.route-detail-text span {
-  font-size: 11px;
-}
-
-.route-transfer-row {
-  width: 100%;
-  min-width: 0;
-  margin: 0;
-  padding: 9px 10px;
-}
-
-.route-transfer-row div:last-child {
   min-width: 0;
 }
 
@@ -1862,65 +1856,83 @@ html, body {
   overflow-wrap: anywhere;
 }
 
-/* Pantallas pequeñas */
+.route-transfer-row strong { font-size: 12px; }
+.route-transfer-row span   { font-size: 11px; opacity: 0.85; }
 
-@media (max-width: 768px) {
-  .route-response-card {
-    padding: 11px;
-  }
-
-  .route-response-header {
-    gap: 9px;
-    padding-bottom: 10px;
-  }
-
-  .route-main-icon {
-    width: 35px;
-    height: 35px;
-    font-size: 15px;
-  }
-
-  .route-header-info {
-    min-width: 0;
-  }
-
-  .route-header-info strong {
-    font-size: 12px;
-    overflow-wrap: anywhere;
-  }
-
-  .route-header-info span {
-    font-size: 10px;
-  }
-
-  .route-line-badge {
-    max-width: 100px;
-    font-size: 9px;
-    padding: 4px 6px;
-  }
-
-  .route-mini-step {
-    font-size: 10px;
-  }
-
-  .route-detail-icon-box {
-    width: 30px;
-    height: 30px;
-    font-size: 13px;
-  }
-
-  .route-detail-text strong {
-    font-size: 11px;
-  }
-
-  .route-detail-text span {
-    font-size: 10px;
-  }
+/* Pie de la respuesta */
+.route-summary-footer {
+  margin-top: 14px;
+  padding-top: 13px;
+  border-top: 1px solid var(--route-border);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--route-text-muted);
+  font-size: 13px;
 }
 
-/* ─── RESPONSIVE CELULAR (<= 768px) ──────────────────────── */
-@media (max-width: 768px) {
+.route-summary-footer strong {
+  color: var(--route-text);
+}
 
+.sending-loader {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes informationModalEnter {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* =========================================================
+   SVG ICON SIZE
+========================================================= */
+.logo-button svg,
+.nav-btn svg,
+.auth-btn svg,
+.profile-btn svg {
+  font-size: 1.3rem;
+}
+
+/* =========================================================
+   RESPONSIVE — TABLET (769px – 1100px)
+========================================================= */
+@media (min-width: 769px) and (max-width: 1100px) {
+  .content {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+
+  .chat-section {
+    min-height: 480px;
+    max-height: 60vh;
+  }
+
+  .map-card { height: 420px; }
+  .profile-layout { grid-template-columns: 1fr; }
+  .profile-stats  { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* =========================================================
+   RESPONSIVE — MÓVIL (<= 768px)
+   (Un único bloque consolidado; antes estaba repartido en
+   varios @media (max-width: 768px) distintos por el archivo.)
+========================================================= */
+@media (max-width: 768px) {
   html, body, #root {
     overflow: hidden;
     height: 100%;
@@ -1932,7 +1944,6 @@ html, body {
     overflow: hidden;
   }
 
-  /* Overlay que oscurece el fondo cuando el sidebar está abierto */
   .sidebar-overlay {
     display: block;
     position: fixed;
@@ -1941,7 +1952,6 @@ html, body {
     z-index: 998;
   }
 
-  /* Sidebar deslizante desde la izquierda */
   .sidebar {
     position: fixed;
     top: 0;
@@ -1961,7 +1971,6 @@ html, body {
     left: 0;
   }
 
-  /* Los nav-icons en columna pero centrados */
   .nav-icons {
     flex-direction: row;
     justify-content: flex-start;
@@ -1975,7 +1984,6 @@ html, body {
     font-size: 19px;
   }
 
-  /* La conversation-list sí se muestra en móvil */
   .conversation-list {
     display: flex;
     flex-direction: column;
@@ -1996,7 +2004,6 @@ html, body {
     min-width: 45px;
   }
 
-  /* Main content ocupa toda la pantalla */
   .main-content {
     flex: 1;
     min-height: 0;
@@ -2013,7 +2020,6 @@ html, body {
 
   .topbar h1 { font-size: 24px; }
 
-  /* Botón hamburguesa: visible solo en móvil */
   .logo-button {
     display: flex;
     align-items: center;
@@ -2028,7 +2034,6 @@ html, body {
     background: var(--teal-dark);
     color: #ffffff;
     font-size: 18px;
-    cursor: pointer;
     transition: var(--ease);
   }
 
@@ -2067,16 +2072,16 @@ html, body {
 
   .map-card { height: 300px; }
 
-  /* Modal en móvil */
   .modal-box,
-  .modal-content-box {
+  .modal-content-box,
+  .modal-card {
     width: 94%;
     padding: 22px 18px;
   }
 
   .modal-actions { flex-direction: row; }
+  .modal-card .modal-actions { flex-direction: column; }
 
-  /* Pages internas */
   .profile-page {
     padding: 16px;
     overflow-y: auto;
@@ -2089,9 +2094,9 @@ html, body {
     gap: 12px;
   }
 
-  .profile-layout    { grid-template-columns: 1fr; }
-  .profile-stats     { grid-template-columns: 1fr 1fr; }
-  .info-list         { grid-template-columns: 1fr; }
+  .profile-layout { grid-template-columns: 1fr; }
+  .profile-stats  { grid-template-columns: 1fr 1fr; }
+  .info-list      { grid-template-columns: 1fr; }
 
   .historial-page {
     padding: 16px;
@@ -2099,7 +2104,7 @@ html, body {
     overflow-x: hidden;
   }
 
-  /* ─── HISTORIAL: tabla → tarjetas en móvil ────────────── */
+  /* Historial: tabla → tarjetas en móvil */
   .historial-table {
     border: none;
     box-shadow: none;
@@ -2154,429 +2159,95 @@ html, body {
     flex-shrink: 0;
   }
 
-  .detalle-page    { padding: 16px; overflow-y: auto; }
-  .mensaje-user    { width: 90%; }
-  .auth-card       { width: 100%; }
-}
+  .detalle-page { padding: 16px; overflow-y: auto; }
+  .mensaje-user { width: 90%; }
+  .auth-card    { width: 100%; }
 
-/* ─── RESPONSIVE TABLET (769px – 1100px) ─────────────────── */
-@media (min-width: 769px) and (max-width: 1100px) {
-
-  .content {
-    grid-template-columns: 1fr;
-    overflow-y: auto;
+  .voomy-login-page {
+    padding: 28px 16px;
+    gap: 18px;
   }
 
-  .chat-section {
-    min-height: 480px;
-    max-height: 60vh;
+  .voomy-logo { gap: 12px; }
+
+  .login-app-description { padding: 12px 14px; }
+  .login-app-description p { font-size: 13px; }
+
+  .voomy-login-container {
+    width: 100%;
+    padding: 26px 20px;
   }
 
-  .map-card { height: 420px; }
-  .profile-layout { grid-template-columns: 1fr; }
-  .profile-stats  { grid-template-columns: repeat(2, 1fr); }
-}
+  .voomy-mascot img { width: 120px; }
 
-/* ─── MODAL CARD (formularios de edición) ────────────────── */
-.modal-card {
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  padding: 34px 30px;
-  width: 90%;
-  max-width: 440px;
-  box-shadow: var(--shadow-3);
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  animation: slideUp 0.22s ease;
-  position: relative;
-  z-index: 100000;
-}
-
-.modal-card h3 {
-  font-family: var(--font-display);
-  color: var(--ink);
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 4px;
-  text-align: center;
-}
-
-.modal-card input {
-  border: 1px solid var(--border);
-  background: var(--surface-alt);
-  color: var(--ink);
-  padding: 13px 16px;
-  border-radius: var(--radius-sm);
-  outline: none;
-  font-size: 14px;
-  font-family: var(--font-body);
-  transition: var(--ease);
-  width: 100%;
-}
-
-.modal-card input:focus { background: var(--surface); border-color: var(--teal); }
-
-/* Botones dentro de modal-card */
-.modal-card .modal-actions button {
-  flex: 1;
-  border: none;
-  background: var(--teal-dark);
-  color: #ffffff;
-  padding: 13px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  font-family: var(--font-body);
-  transition: var(--ease);
-}
-
-.modal-card .modal-actions button:hover  { background: var(--teal-darker); }
-.modal-card .modal-actions button.danger { background: var(--coral); }
-.modal-card .modal-actions button.danger:hover { background: var(--coral-dark); }
-
-@media (max-width: 768px) {
-  .modal-card {
-    width: 94%;
-    padding: 24px 18px;
+  .voomy-login-container h2 {
+    font-size: 16px;
+    margin-bottom: 20px;
   }
 
-  .modal-card .modal-actions {
-    flex-direction: column;
-  }
-}
+  .login-service-label { font-size: 12px; }
 
-/* ─── INFORMATION MODAL (Bienvenido a Voomy) ─────────────── */
-/* Antes usaba verdes (#198754) que no pertenecían a la paleta.
-   Ahora usa el mismo teal que el resto de la app. */
-.information-modal {
-  position: relative;
-
-  width: min(92%, 590px);
-  max-height: 90vh;
-  overflow-y: auto;
-
-  padding: 32px;
-
-  background-color: var(--surface);
-  border-radius: 22px;
-
-  box-shadow: var(--shadow-3);
-
-  text-align: center;
-
-  animation:
-    informationModalEnter
-    0.25s ease;
-}
-
-@keyframes informationModalEnter {
-  from {
-    opacity: 0;
-    transform:
-      translateY(18px)
-      scale(0.97);
+  .voomy-login-container input,
+  .voomy-login-container button {
+    width: 100%;
+    max-width: 320px;
   }
 
-  to {
-    opacity: 1;
-    transform:
-      translateY(0)
-      scale(1);
+  .auth-error {
+    width: 100%;
+    max-width: 320px;
   }
-}
 
-.information-modal-close {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-
-  width: 36px;
-  height: 36px;
-
-  border: none;
-  border-radius: 50%;
-
-  color: var(--ink-soft);
-  background-color: var(--surface-alt);
-
-  font-size: 25px;
-  line-height: 1;
-
-  cursor: pointer;
-  transition: var(--ease);
-}
-
-.information-modal-close:hover {
-  color: #ffffff;
-  background-color: var(--teal-dark);
-}
-
-.information-modal-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 76px;
-  height: 76px;
-
-  margin: 0 auto 15px;
-
-  color: #ffffff;
-  background: linear-gradient(135deg, var(--teal), var(--teal-dark));
-
-  border-radius: 22px;
-
-  font-size: 35px;
-
-  box-shadow: 0 10px 24px rgba(3, 105, 161, 0.25);
-}
-
-.information-modal-label {
-  display: inline-block;
-
-  margin-bottom: 6px;
-
-  color: var(--teal-dark);
-
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.information-modal h2 {
-  margin: 0 0 12px;
-
-  color: var(--ink);
-
-  font-size: 27px;
-  font-family: var(--font-display);
-}
-
-.information-modal-description {
-  max-width: 500px;
-
-  margin: 0 auto 24px;
-
-  color: var(--ink-soft);
-
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-.information-modal-options {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  text-align: left;
-}
-
-.information-option {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-
-  padding: 15px;
-
-  background-color: var(--teal-light);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  transition: var(--ease);
-}
-
-.information-option:hover {
-  border-color: var(--teal);
-  transform: translateX(2px);
-}
-
-.information-option > svg {
-  flex-shrink: 0;
-
-  margin-top: 3px;
-
-  color: var(--teal-dark);
-
-  font-size: 23px;
-}
-
-.information-option div {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.information-option strong {
-  color: var(--ink);
-
-  font-size: 14px;
-}
-
-.information-option span {
-  color: var(--ink-soft);
-
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.information-modal-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-
-  margin-top: 18px;
-  padding: 13px 15px;
-
-  color: var(--amber-text-on-light);
-  background-color: var(--amber-light);
-
-  border: 1px solid #f1df98;
-  border-radius: 12px;
-
-  font-size: 13px;
-  line-height: 1.5;
-  text-align: left;
-}
-
-.information-modal-note svg {
-  flex-shrink: 0;
-
-  margin-top: 2px;
-}
-
-.information-modal-button {
-  width: 100%;
-
-  margin-top: 20px;
-  padding: 13px 20px;
-
-  border: none;
-  border-radius: 12px;
-
-  color: #ffffff;
-  background-color: var(--teal-dark);
-
-  font-size: 15px;
-  font-weight: 700;
-
-  cursor: pointer;
-  transition: var(--ease);
-}
-
-.information-modal-button:hover {
-  background-color: var(--teal-darker);
-}
-
-@media (max-width: 600px) {
   .information-modal {
-    padding:
-      28px 18px
-      20px;
+    padding: 28px 18px 20px;
   }
 
-  .information-modal h2 {
-    font-size: 22px;
+  .information-modal h2 { font-size: 22px; }
+  .information-modal-description { font-size: 14px; }
+
+  /* Tarjeta de ruta compacta */
+  .route-response-card {
+    padding: 11px;
+    border-radius: 16px;
   }
 
-  .information-modal-description {
-    font-size: 14px;
+  .route-response-header {
+    gap: 9px;
+    padding-bottom: 10px;
   }
-}
 
-.sidebar-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  .route-main-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 15px;
+  }
 
-  width: 100%;
-  padding: 24px 16px 10px;
-}
+  .route-header-info strong { font-size: 12px; }
+  .route-header-info span   { font-size: 10px; }
 
-.sidebar-link {
-  display: block;
-  width: 100%;
+  .route-steps-summary { gap: 5px; padding: 10px 0; }
 
-  text-decoration: none;
-}
+  .route-mini-step { font-size: 10px; }
+  .route-mini-step span:not(.route-line-badge) { display: none; }
 
-.sidebar-item {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 14px;
+  .route-line-badge {
+    max-width: 100px;
+    font-size: 9px;
+    padding: 4px 6px;
+  }
 
-  width: 100%;
-  min-height: 54px;
+  .route-detail-row {
+    padding: 12px 8px 12px 17px;
+  }
 
-  padding: 13px 16px;
+  .route-detail-icon-box {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
 
-  border: none;
-  border-radius: 14px;
+  .route-detail-text strong { font-size: 11px; }
+  .route-detail-text span   { font-size: 10px; }
 
-  color: #d8edf8;
-  background-color: transparent;
-
-  font-family: inherit;
-  cursor: pointer;
-
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.sidebar-item:hover {
-  color: #ffffff;
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.12
-  );
-
-  transform: translateX(3px);
-}
-
-.sidebar-item.active {
-  color: #0d6ea8;
-  background-color: #eef8ff;
-
-  box-shadow:
-    0 6px 16px
-    rgba(0, 0, 0, 0.12);
-}
-
-.sidebar-item svg {
-  flex-shrink: 0;
-
-  width: 25px;
-  height: 25px;
-
-  font-size: 25px;
-}
-
-.sidebar-item span {
-  flex: 1;
-
-  font-size: 15px;
-  font-weight: 600;
-  text-align: left;
-  white-space: nowrap;
-}
-
-.conversation-list {
-  margin-top: 26px;
-}
-
-.conversation-list h4 {
-  margin-bottom: 18px;
-
-  color: #b9dced;
-
-  font-size: 13px;
-  letter-spacing: 1px;
-  text-align: center;
-  text-transform: uppercase;
+  .route-location strong { font-size: 12px; }
 }
