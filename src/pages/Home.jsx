@@ -13,6 +13,9 @@ import api from "../services/api";
 
 import ChatBot from "../components/ChatBot";
 import Mapa from "../components/Mapa";
+import TutorialVoomy from "../components/TutorialVoomy";
+
+import "../App.css";
 
 import {
   FaHome,
@@ -89,6 +92,23 @@ function Home() {
     modalInformacion,
     setModalInformacion
   ] = useState(false);
+
+  /* ======================================
+     TUTORIAL GUIADO (SPOTLIGHT)
+  ====================================== */
+
+  const [
+    mostrarTutorial,
+    setMostrarTutorial
+  ] = useState(() => {
+    try {
+      return !localStorage.getItem(
+        "tutorialVoomy"
+      );
+    } catch {
+      return false;
+    }
+  });
 
   /* ======================================
      MODAL PARA ELIMINAR CHAT
@@ -288,6 +308,26 @@ function Home() {
     };
 
   /* ======================================
+     CERRAR TUTORIAL GUIADO
+  ====================================== */
+
+  const cerrarTutorial = () => {
+    try {
+      localStorage.setItem(
+        "tutorialVoomy",
+        "true"
+      );
+    } catch (error) {
+      console.error(
+        "Error guardando estado del tutorial:",
+        error
+      );
+    }
+
+    setMostrarTutorial(false);
+  };
+
+  /* ======================================
      CARGAR CONVERSACIONES
   ====================================== */
 
@@ -455,78 +495,197 @@ function Home() {
      ABRIR UNA CONVERSACIÓN
   ====================================== */
 
-  const abrirConversacion =
-    async (
-      conversacionId
-    ) => {
-      try {
-        const response =
-          await api.get(
-            `/conversacion/${conversacionId}`
-          );
+ const abrirConversacion =
+async (
+  conversacionId
+) => {
 
-        localStorage.setItem(
-          "mensajes_chat",
-          JSON.stringify(
-            response.data
-          )
-        );
+  try {
 
-        localStorage.setItem(
-          "conversacion_id",
-          String(
-            conversacionId
-          )
-        );
+    const response =
+      await api.get(
+        `/conversacion/${conversacionId}`
+      );
 
-        localStorage.removeItem(
-          "origen"
-        );
 
-        localStorage.removeItem(
-          "destino"
-        );
+    const mensajes =
+      response.data;
 
-        localStorage.removeItem(
-          "rutaRecomendada"
-        );
 
-        localStorage.removeItem(
-          "transbordosInfo"
-        );
+    localStorage.setItem(
+      "mensajes_chat",
+      JSON.stringify(
+        mensajes
+      )
+    );
 
-        localStorage.removeItem(
-          "segmentosRuta"
-        );
 
-        localStorage.removeItem(
-          "caminataInicio"
-        );
+    localStorage.setItem(
+      "conversacion_id",
+      String(
+        conversacionId
+      )
+    );
 
-        localStorage.removeItem(
-          "caminataFin"
-        );
 
-        setOrigen(null);
-        setDestino(null);
-        setRutaRecomendada(null);
-        setSegmentosRuta([]);
-        setCaminataInicio(null);
-        setCaminataFin(null);
+    /*
+    =================================
+    BUSCAR ÚLTIMA RUTA DEL CHAT
+    =================================
+    */
 
-        setChatKey(
-          (prev) => prev + 1
-        );
+    const mensajeRuta =
+      mensajes.find(
+        (mensaje) =>
+          mensaje.tipo === "bot" &&
+          mensaje.tipoRespuesta === "ruta"
+      );
 
-        setSidebarOpen(false);
-      } catch (error) {
-        console.error(
-          "Error cargando conversación:",
-          error.response?.data ||
-            error
-        );
-      }
-    };
+
+    if (
+      mensajeRuta &&
+      mensajeRuta.datosRuta
+    ) {
+
+      const datos =
+        mensajeRuta.datosRuta;
+
+
+      /*
+      ===============================
+      RECUPERAR DATOS DEL MAPA
+      ===============================
+      */
+
+
+      setOrigen({
+        nombre:
+          datos.origen_texto
+      });
+
+
+      setDestino({
+        nombre:
+          datos.destino_texto
+      });
+
+
+      setRutaRecomendada(
+        datos.tramo_geojson
+      );
+
+
+      setSegmentosRuta(
+        datos.segmentos || []
+      );
+
+
+      setCaminataInicio(
+        datos.caminata_inicio
+      );
+
+
+      setCaminataFin(
+        datos.caminata_fin
+      );
+
+
+      /*
+      ===============================
+      GUARDAR TAMBIÉN EN LOCALSTORAGE
+      ===============================
+      */
+
+
+      localStorage.setItem(
+        "origen",
+        JSON.stringify({
+          nombre:
+            datos.origen_texto
+        })
+      );
+
+
+      localStorage.setItem(
+        "destino",
+        JSON.stringify({
+          nombre:
+            datos.destino_texto
+        })
+      );
+
+
+      localStorage.setItem(
+        "rutaRecomendada",
+        JSON.stringify(
+          datos.tramo_geojson
+        )
+      );
+
+
+      localStorage.setItem(
+        "segmentosRuta",
+        JSON.stringify(
+          datos.segmentos || []
+        )
+      );
+
+
+      localStorage.setItem(
+        "caminataInicio",
+        JSON.stringify(
+          datos.caminata_inicio
+        )
+      );
+
+
+      localStorage.setItem(
+        "caminataFin",
+        JSON.stringify(
+          datos.caminata_fin
+        )
+      );
+
+
+      localStorage.setItem(
+        "transbordosInfo",
+        JSON.stringify(
+          datos.transbordos_info || []
+        )
+      );
+
+
+    } else {
+
+
+      // Si no tiene ruta limpiamos mapa
+
+      limpiarRuta();
+
+    }
+
+
+    setChatKey(
+      (prev)=>prev+1
+    );
+
+
+    setSidebarOpen(
+      false
+    );
+
+
+  } catch(error){
+
+    console.error(
+      "Error cargando conversación:",
+      error.response?.data ||
+      error
+    );
+
+  }
+
+};
 
   /* ======================================
      SOLICITAR ELIMINACIÓN
@@ -623,6 +782,7 @@ function Home() {
           MENÚ LATERAL
       ================================== */}
 <aside
+  data-tutorial="tutorial-sidebar"
   className={
     `sidebar ${
       sidebarOpen
@@ -802,6 +962,7 @@ function Home() {
             <div className="profile-menu">
 
               <button
+                data-tutorial="tutorial-perfil"
                 type="button"
                 className="profile-btn"
                 onClick={() =>
@@ -883,34 +1044,42 @@ function Home() {
 
         <section className="content">
 
-          <ChatBot
-            key={
-              chatKey
-            }
-            setOrigen={
-              setOrigen
-            }
-            setDestino={
-              setDestino
-            }
-            setRutaRecomendada={
-              setRutaRecomendada
-            }
-            setSegmentosRuta={
-              setSegmentosRuta
-            }
-            setCaminataInicio={
-              setCaminataInicio
-            }
-            setCaminataFin={
-              setCaminataFin
-            }
-            onConsultaGuardada={
-              cargarConversaciones
-            }
-          />
+          <div
+            data-tutorial="tutorial-chat"
+            className="chat-tutorial-wrapper"
+          >
+            <ChatBot
+              key={
+                chatKey
+              }
+              setOrigen={
+                setOrigen
+              }
+              setDestino={
+                setDestino
+              }
+              setRutaRecomendada={
+                setRutaRecomendada
+              }
+              setSegmentosRuta={
+                setSegmentosRuta
+              }
+              setCaminataInicio={
+                setCaminataInicio
+              }
+              setCaminataFin={
+                setCaminataFin
+              }
+              onConsultaGuardada={
+                cargarConversaciones
+              }
+            />
+          </div>
 
-          <div className="map-card">
+          <div
+            data-tutorial="tutorial-mapa"
+            className="map-card"
+          >
             <Mapa
               origen={
                 origen
@@ -1116,6 +1285,19 @@ function Home() {
           </div>
         </div>
       )}
+
+      {/* ==================================
+          TUTORIAL GUIADO (SPOTLIGHT)
+          Se muestra solo una vez, después
+          del modal de información.
+      ================================== */}
+
+      {mostrarTutorial &&
+        !modalInformacion && (
+          <TutorialVoomy
+            cerrar={cerrarTutorial}
+          />
+        )}
 
     </div>
   );

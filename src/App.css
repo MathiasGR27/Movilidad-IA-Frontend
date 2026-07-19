@@ -21,18 +21,11 @@
   --teal-light: #e0f2fe;
   --teal-text-on-light: #075985;
 
-  /* AMBER: color propio para favoritos/acentos secundarios.
-     (Antes apuntaba a un tono azul casi idéntico al teal, lo que
-     hacía que "favoritos" se confundiera visualmente con acciones
-     primarias. Ahora es un dorado cálido real.) */
   --amber: #29aef0;
   --amber-dark: #0975b4;
   --amber-light: #c7e2fe;
   --amber-text-on-light: #0e5b92;
 
-  /* CORAL: color de peligro/error. (Antes era azul, lo que rompía
-     la convención visual de "rojo = eliminar/error". Ahora es un
-     rojo-coral suave, consistente con el resto de la paleta pastel.) */
   --coral: #e0645a;
   --coral-dark: #b8453d;
   --coral-light: #fbe9e7;
@@ -55,16 +48,12 @@
   --ease: 0.2s ease;
 }
 
-/* =========================================================
-   RESET
-========================================================= */
 *, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Scrollbars invisibles en toda la app */
 * {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -90,7 +79,6 @@ html, body {
   overflow: hidden;
 }
 
-/* Todo elemento interactivo hereda tipografía y pierde el highlight azul de móvil */
 button, input, textarea, select {
   font-family: inherit;
   -webkit-tap-highlight-color: transparent;
@@ -105,7 +93,6 @@ button:disabled {
   opacity: 0.55;
 }
 
-/* Foco accesible consistente para toda la app */
 button:focus-visible,
 input:focus-visible,
 a:focus-visible {
@@ -113,11 +100,6 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
-/* =========================================================
-   BOTONES — patrón compartido
-   (Agrupa selectores que antes repetían la misma regla
-   "fondo teal-dark, texto blanco, hover teal-darker".)
-========================================================= */
 .chat-header button,
 .edit-profile-btn,
 .history-btn,
@@ -156,7 +138,6 @@ a:focus-visible {
   transform: scale(0.97);
 }
 
-/* Botones "outline" secundarios: fondo blanco, borde suave, hover teal claro */
 .volver-btn,
 .ver-btn,
 .profile-action-buttons button {
@@ -184,7 +165,6 @@ a:focus-visible {
   transform: scale(0.98);
 }
 
-/* Botones destructivos, todos comparten la misma paleta coral */
 .btn-eliminar,
 .modal-card .modal-actions button.danger,
 .profile-action-buttons .danger {
@@ -200,9 +180,6 @@ a:focus-visible {
   border-color: var(--coral-dark);
 }
 
-/* =========================================================
-   LAYOUT
-========================================================= */
 .layout {
   width: 100%;
   height: 100vh;
@@ -210,7 +187,6 @@ a:focus-visible {
   overflow: hidden;
 }
 
-/* ─── SIDEBAR ────────────────────────────────────────────── */
 .sidebar {
   width: 240px;
   min-width: 240px;
@@ -234,7 +210,6 @@ a:focus-visible {
   display: none;
 }
 
-/* Menú de navegación estilo lista (Principal / Mapa / Información / Crear chat) */
 .sidebar-menu {
   display: flex;
   flex-direction: column;
@@ -291,7 +266,6 @@ a:focus-visible {
   white-space: nowrap;
 }
 
-/* Menú de navegación alterno, solo íconos (usado en variantes compactas) */
 .nav-icons {
   display: flex;
   flex-direction: column;
@@ -346,7 +320,6 @@ a:focus-visible {
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* ─── CONVERSATION LIST ──────────────────────────────────── */
 .conversation-list {
   flex: 1;
   overflow-y: auto;
@@ -424,7 +397,6 @@ a:focus-visible {
   background: rgba(224, 100, 90, 0.35);
 }
 
-/* ─── MAIN CONTENT ───────────────────────────────────────── */
 .main-content {
   flex: 1;
   display: flex;
@@ -434,7 +406,6 @@ a:focus-visible {
   background: var(--bg);
 }
 
-/* ─── TOPBAR ─────────────────────────────────────────────── */
 .topbar {
   height: 84px;
   min-height: 84px;
@@ -455,7 +426,6 @@ a:focus-visible {
   color: var(--ink);
 }
 
-/* ─── PROFILE MENU ───────────────────────────────────────── */
 .profile-menu {
   position: relative;
 }
@@ -537,9 +507,6 @@ a:focus-visible {
   color: var(--coral-dark);
 }
 
-/* =========================================================
-   CHAT
-========================================================= */
 .content {
   display: grid;
   grid-template-columns: 1.3fr 1fr;
@@ -547,6 +514,22 @@ a:focus-visible {
   padding: 28px;
   flex: 1;
   overflow: hidden;
+  min-height: 0;
+}
+
+/* Wrapper agregado para el tutorial guiado: no debe alterar el
+   layout original del chat, solo re-transmitir la altura que el
+   grid de .content ya le da, hacia .chat-section. */
+.chat-tutorial-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.chat-tutorial-wrapper > .chat-section {
+  flex: 1;
   min-height: 0;
 }
 
@@ -682,7 +665,6 @@ a:focus-visible {
   transform: scale(0.96);
 }
 
-/* ─── INPUT ──────────────────────────────────────────────── */
 .input-box {
   flex-shrink: 0;
   display: flex;
@@ -701,8 +683,6 @@ a:focus-visible {
   box-shadow: 0 0 0 3px var(--teal-light);
 }
 
-/* Ícono circular a la izquierda (ej. "navegación"/origen).
-   Ajusta el nombre de clase si tu componente usa otro. */
 .input-icon {
   width: 34px;
   height: 34px;
@@ -738,7 +718,6 @@ a:focus-visible {
   flex-shrink: 0;
 }
 
-/* ─── MAP ────────────────────────────────────────────────── */
 .map-card {
   width: 100%;
   height: 100%;
@@ -786,9 +765,6 @@ a:focus-visible {
   min-height: 0;
 }
 
-/* =========================================================
-   MODALES
-========================================================= */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -865,13 +841,10 @@ a:focus-visible {
   background-color: var(--border);
 }
 
-/* .btn-eliminar comparte estilo con los demás botones destructivos —
-   ver bloque "BOTONES — patrón compartido" al inicio del archivo */
 .btn-eliminar:active {
   transform: scale(0.97);
 }
 
-/* ─── MENSAJE MODAL ──────────────────────────────────────── */
 .mensaje-modal {
   text-align: center;
 }
@@ -891,7 +864,6 @@ a:focus-visible {
   min-width: 120px;
 }
 
-/* ─── MODAL CARD (formularios de edición) ────────────────── */
 .modal-card {
   background: var(--surface);
   border-radius: var(--radius-lg);
@@ -939,9 +911,6 @@ a:focus-visible {
   font-size: 14px;
 }
 
-/* =========================================================
-   PAGES CON SCROLL PROPIO
-========================================================= */
 .profile-page,
 .historial-page,
 .detalle-page {
@@ -950,7 +919,6 @@ a:focus-visible {
   height: 100%;
 }
 
-/* ─── PROFILE PAGE ───────────────────────────────────────── */
 .profile-page {
   background: var(--bg);
   padding: 32px;
@@ -1142,9 +1110,6 @@ a:focus-visible {
   justify-content: center;
 }
 
-/* =========================================================
-   AUTH PAGE
-========================================================= */
 .voomy-login-page {
   width: 100%;
   min-height: 100vh;
@@ -1305,9 +1270,6 @@ a:focus-visible {
   font-size: 13px;
 }
 
-/* =========================================================
-   HISTORIAL
-========================================================= */
 .historial-page {
   padding: 36px;
   background: var(--bg);
@@ -1358,9 +1320,6 @@ a:focus-visible {
   padding: 11px;
 }
 
-/* =========================================================
-   DETALLE
-========================================================= */
 .detalle-page {
   max-width: 1200px;
   margin: 0 auto;
@@ -1422,9 +1381,6 @@ a:focus-visible {
   font-size: 14px;
 }
 
-/* =========================================================
-   FAVORITOS
-========================================================= */
 .favorito-btn {
   border: 1px solid var(--amber);
   background: var(--amber-light);
@@ -1440,9 +1396,6 @@ a:focus-visible {
 .favorito-btn:active { transform: scale(0.96); }
 .favorito-activo    { color: var(--amber-dark); font-weight: 600; }
 
-/* =========================================================
-   INFORMATION MODAL (Bienvenido a Voomy)
-========================================================= */
 .information-modal {
   position: relative;
   width: min(92%, 590px);
@@ -1582,11 +1535,6 @@ a:focus-visible {
   font-weight: 700;
 }
 
-/* =========================================================
-   RESPUESTA VISUAL DE RUTAS
-   (paleta local en variables para no repetir los mismos grises
-   y azules una y otra vez en cada sub-clase)
-========================================================= */
 .route-response-card {
   --route-text: #23374a;
   --route-text-soft: #4e6170;
@@ -1651,7 +1599,6 @@ a:focus-visible {
   color: var(--route-text-muted);
 }
 
-/* Resumen de pasos (caminar / línea / transbordo) */
 .route-steps-summary {
   width: 100%;
   display: flex;
@@ -1709,7 +1656,6 @@ a:focus-visible {
   word-break: break-word;
 }
 
-/* Origen y destino */
 .route-location {
   width: 100%;
   min-width: 0;
@@ -1749,7 +1695,6 @@ a:focus-visible {
   overflow-wrap: anywhere;
 }
 
-/* Detalle de segmentos */
 .route-segment-details {
   margin: 14px 0;
   display: flex;
@@ -1820,7 +1765,6 @@ a:focus-visible {
   color: var(--route-text-soft);
 }
 
-/* Transbordo */
 .route-transfer-row {
   width: 100%;
   min-width: 0;
@@ -1859,7 +1803,6 @@ a:focus-visible {
 .route-transfer-row strong { font-size: 12px; }
 .route-transfer-row span   { font-size: 11px; opacity: 0.85; }
 
-/* Pie de la respuesta */
 .route-summary-footer {
   margin-top: 14px;
   padding-top: 13px;
@@ -1880,9 +1823,6 @@ a:focus-visible {
   font-weight: 700;
 }
 
-/* =========================================================
-   ANIMATIONS
-========================================================= */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-8px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1898,9 +1838,6 @@ a:focus-visible {
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* =========================================================
-   SVG ICON SIZE
-========================================================= */
 .logo-button svg,
 .nav-btn svg,
 .auth-btn svg,
@@ -1908,9 +1845,6 @@ a:focus-visible {
   font-size: 1.3rem;
 }
 
-/* =========================================================
-   RESPONSIVE — TABLET (769px – 1100px)
-========================================================= */
 @media (min-width: 769px) and (max-width: 1100px) {
   .content {
     grid-template-columns: 1fr;
@@ -1927,11 +1861,6 @@ a:focus-visible {
   .profile-stats  { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* =========================================================
-   RESPONSIVE — MÓVIL (<= 768px)
-   (Un único bloque consolidado; antes estaba repartido en
-   varios @media (max-width: 768px) distintos por el archivo.)
-========================================================= */
 @media (max-width: 768px) {
   html, body, #root {
     overflow: hidden;
@@ -2104,7 +2033,6 @@ a:focus-visible {
     overflow-x: hidden;
   }
 
-  /* Historial: tabla → tarjetas en móvil */
   .historial-table {
     border: none;
     box-shadow: none;
@@ -2205,7 +2133,6 @@ a:focus-visible {
   .information-modal h2 { font-size: 22px; }
   .information-modal-description { font-size: 14px; }
 
-  /* Tarjeta de ruta compacta */
   .route-response-card {
     padding: 11px;
     border-radius: 16px;
@@ -2250,4 +2177,816 @@ a:focus-visible {
   .route-detail-text span   { font-size: 10px; }
 
   .route-location strong { font-size: 12px; }
+}
+
+.login-page {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.25fr)
+    minmax(440px, 1fr);
+
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+
+  background-color: #f5f8fb;
+}
+
+.login-information-panel {
+  position: relative;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.login-information-overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      160deg,
+      rgba(2, 54, 83, 0.97) 0%,
+      rgba(4, 101, 140, 0.92) 58%,
+      rgba(13, 145, 166, 0.55) 100%
+    );
+}
+
+.login-information-content {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  height: 100%;
+  min-height: 100%;
+  padding: clamp(24px, 4.2vh, 42px) 7% clamp(18px, 3.2vh, 32px);
+  overflow: hidden;
+}
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.login-brand img {
+  width: 145px;
+  max-height: 58px;
+  object-fit: contain;
+
+  filter:
+    brightness(0)
+    invert(1)
+    drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
+}
+
+.login-brand span {
+  padding: 0 0 6px;
+
+  color: #ffffff;
+  background: transparent;
+
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+
+  border-radius: 0;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.login-hero-content {
+  width: min(100%, 760px);
+
+  margin: 0;
+  padding: clamp(14px, 3vh, 32px) 0;
+}
+
+.login-hero-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: clamp(34px, 5vh, 44px);
+  height: clamp(34px, 5vh, 44px);
+
+  margin-bottom: clamp(10px, 2vh, 20px);
+
+  color: #ffffff;
+  background-color: transparent;
+
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+
+  font-size: clamp(15px, 2.1vh, 19px);
+
+  box-shadow: none;
+}
+
+.login-hero-content h1 {
+  max-width: 720px;
+
+  margin: 0 0 clamp(10px, 2vh, 18px);
+
+  color: #ffffff;
+
+  font-size:
+    clamp(
+      30px,
+      4.6vh,
+      56px
+    );
+
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -1.3px;
+  text-align: left;
+
+  text-shadow:
+    0 3px 18px
+    rgba(0, 0, 0, 0.2);
+}
+
+.login-hero-content > p {
+  max-width: 670px;
+
+  margin: 0;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
+
+  font-size: clamp(14px, 1.8vh, 17px);
+  line-height: 1.65;
+  text-align: left;
+}
+
+.login-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.8vh, 15px);
+
+  margin-top: clamp(18px, 3.2vh, 32px);
+  max-width: 520px;
+}
+
+.login-benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+
+  padding: clamp(11px, 2vh, 16px) 16px;
+
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.login-benefit-item:hover {
+  background: rgba(255, 255, 255, 0.13);
+  transform: translateX(3px);
+}
+
+.login-benefit-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: clamp(33px, 4.8vh, 42px);
+  height: clamp(33px, 4.8vh, 42px);
+
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: clamp(14px, 1.9vh, 18px);
+
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+.login-benefit-item:nth-child(1) .login-benefit-icon {
+  background: linear-gradient(135deg, #34d399, #0f9d68);
+}
+.login-benefit-item:nth-child(2) .login-benefit-icon {
+  background: linear-gradient(135deg, #38bdf8, #0369a1);
+}
+.login-benefit-item:nth-child(3) .login-benefit-icon {
+  background: linear-gradient(135deg, #fbbf24, #d97706);
+}
+
+.login-benefit-item div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.login-benefit-item strong {
+  color: #ffffff;
+
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.login-benefit-item span {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.72
+    );
+
+  font-size: 12.5px;
+  line-height: 1.55;
+  text-align: left;
+}
+
+.login-information-footer {
+  margin-top: auto;
+  padding-top: 22px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.75
+    );
+
+  border-top:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.18
+    );
+
+  font-size: 12.5px;
+  text-align: left;
+}
+
+.login-form-panel {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  min-height: 100%;
+  padding: clamp(16px, 3vh, 40px) clamp(20px, 4vw, 46px);
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff,
+      #f8fbfd
+    );
+}
+
+.login-form-wrapper {
+  width: min(100%, 410px);
+}
+
+.login-mascot {
+  display: flex;
+  justify-content: center;
+
+  margin-bottom: clamp(6px, 1.4vh, 13px);
+}
+
+.login-mascot img {
+  width: clamp(58px, 9.5vh, 90px);
+  height: clamp(58px, 9.5vh, 90px);
+  object-fit: contain;
+}
+
+.login-form-heading {
+  margin-bottom: clamp(14px, 2.6vh, 25px);
+  text-align: center;
+}
+
+.login-form-heading > span {
+  display: inline-block;
+  margin-bottom: 7px;
+
+  color: #087daf;
+
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.login-form-heading h2 {
+  margin: 0 0 8px;
+
+  color: #153847;
+
+  font-size: clamp(26px, 3.8vh, 34px);
+  font-weight: 800;
+}
+
+.login-form-heading p {
+  margin: 0;
+
+  color: #71838c;
+
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(13px, 2.3vh, 20px);
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1.1vh, 9px);
+}
+
+.login-field label {
+  color: #2f4956;
+
+  font-size: 12.5px;
+  font-weight: 800;
+}
+
+.login-input-wrapper {
+  display: flex;
+  align-items: center;
+
+  min-height: clamp(46px, 7.2vh, 54px);
+  padding: 0 14px;
+
+  background-color: #ffffff;
+
+  border: 1.5px solid #dbe6eb;
+  border-radius: 10px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.login-input-wrapper:focus-within {
+  background-color: #ffffff;
+  border-color: #0b83b8;
+
+  box-shadow: 0 0 0 3px rgba(11, 131, 184, 0.12);
+}
+
+.login-input-wrapper > svg {
+  flex-shrink: 0;
+
+  color: #8297a1;
+  font-size: 16px;
+}
+
+.login-input-wrapper input {
+  flex: 1;
+  min-width: 0;
+
+  padding: 0 11px;
+
+  color: #243f4b;
+  background-color: transparent;
+
+  border: none;
+  outline: none;
+
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.login-input-wrapper input::placeholder {
+  color: #a1afb6;
+}
+
+/* Fix del autofill de Chrome: el navegador impone su propio
+   background-color (gris/amarillo) y no lo deja sobreescribir
+   con background normal, así que se "tapa" con un box-shadow
+   interno gigante del color del input, y se corrige también el
+   color del texto que Chrome fuerza a gris. */
+.login-input-wrapper input:-webkit-autofill,
+.login-input-wrapper input:-webkit-autofill:hover,
+.login-input-wrapper input:-webkit-autofill:focus,
+.login-input-wrapper input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
+  box-shadow: 0 0 0px 1000px #ffffff inset;
+  -webkit-text-fill-color: #243f4b;
+  caret-color: #243f4b;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+.login-password-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px;
+
+  color: #80939d;
+  background-color: transparent;
+
+  border: none;
+  cursor: pointer;
+}
+
+.login-password-toggle:hover {
+  color: #087daf;
+}
+
+.login-submit-button {
+  min-height: clamp(46px, 7.2vh, 54px);
+  margin-top: 4px;
+
+  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      #128ec3,
+      #08638c
+    );
+
+  border: none;
+  border-radius: 10px;
+
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 12px
+    rgba(
+      8,
+      99,
+      140,
+      0.18
+    );
+
+  transition:
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.login-submit-button:hover:not(:disabled) {
+  filter: brightness(1.04);
+
+  box-shadow:
+    0 6px 16px
+    rgba(
+      8,
+      99,
+      140,
+      0.24
+    );
+}
+
+.login-register-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  margin-top: clamp(13px, 2.4vh, 22px);
+
+  color: #778994;
+  font-size: 13.5px;
+}
+
+.login-register-section a {
+  color: #0b84b8;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.login-register-section a:hover {
+  text-decoration: underline;
+}
+
+.login-service-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  margin-top: clamp(14px, 2.6vh, 26px);
+  padding: 11px 14px;
+
+  color: #58717d;
+  background-color: #f2f7f9;
+
+  border:
+    1px solid
+    #dfe9ed;
+
+  border-radius: 12px;
+
+  font-size: 11.5px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.login-service-note svg {
+  flex-shrink: 0;
+
+  color: #087daf;
+  font-size: 16px;
+}
+
+.login-mobile-logo {
+  display: none;
+}
+
+.login-mobile-logo img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.login-error {
+  width: 100%;
+  padding: 12px 14px;
+
+  color: #b8453d;
+  background-color: #fbe9e7;
+
+  border: 1px solid #f4cac5;
+  border-radius: 10px;
+
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+@media (max-width: 1180px) {
+  .login-page {
+    grid-template-columns:
+      minmax(0, 1.35fr)
+      minmax(390px, 0.8fr);
+  }
+
+  .login-benefits {
+    max-width: 100%;
+  }
+
+  .login-hero-content h1 {
+    font-size: 44px;
+  }
+}
+
+@media (max-width: 820px) {
+  .login-page {
+    display: block;
+    position: fixed;
+    inset: 0;
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+  }
+
+  .login-information-panel {
+    display: none;
+  }
+
+  .login-form-panel {
+    height: auto;
+    min-height: 100%;
+    padding: 30px 20px;
+  }
+
+  .login-form-wrapper {
+    width: min(100%, 440px);
+  }
+
+  .login-mobile-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 18px;
+  }
+}
+
+.tutorial-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+
+.tutorial-fondo-oscuro {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 15, 20, 0.65);
+}
+
+.tutorial-resaltado {
+  position: fixed;
+  border-radius: 12px;
+  box-shadow: 0 0 0 9999px rgba(15, 15, 20, 0.65);
+  border: 2px solid #6c5ce7;
+  transition: top 0.25s ease, left 0.25s ease, width 0.25s ease, height 0.25s ease;
+  pointer-events: none;
+}
+
+.tutorial-box {
+  position: fixed;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px 20px 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  transition: top 0.25s ease, left 0.25s ease;
+}
+
+.tutorial-box h3 {
+  margin: 4px 0 8px;
+  font-size: 16px;
+  color: #1f1f28;
+}
+
+.tutorial-box p {
+  margin: 0 0 14px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #4a4a55;
+}
+
+.tutorial-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9a9aa5;
+  font-size: 14px;
+}
+
+.tutorial-close:hover {
+  color: #4a4a55;
+}
+
+.tutorial-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.tutorial-nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tutorial-omitir {
+  background: none;
+  border: none;
+  color: #8a8a95;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.tutorial-omitir:hover {
+  color: #4a4a55;
+  text-decoration: underline;
+}
+
+.tutorial-anterior {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: #6c5ce7;
+  border: 1px solid #d8d3fb;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.tutorial-anterior:hover {
+  background: #f2f0fe;
+}
+
+.tutorial-next {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #6c5ce7;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tutorial-next:hover {
+  background: #5a4bd1;
+}
+
+.tutorial-counter {
+  margin-top: 10px;
+  font-size: 11.5px;
+  color: #a0a0aa;
+  text-align: right;
+}
+
+.tutorial-box::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  transform: rotate(45deg);
+}
+
+.tutorial-flecha-bottom::before {
+  top: -6px;
+  left: 24px;
+}
+
+.tutorial-flecha-top::before {
+  bottom: -6px;
+  left: 24px;
+}
+
+.tutorial-flecha-right::before {
+  left: -6px;
+  top: 24px;
+}
+
+.tutorial-flecha-left::before {
+  right: -6px;
+  top: 24px;
+}
+
+.tutorial-flecha-centro::before {
+  display: none;
+}
+
+.route-map-button{
+
+    margin-top:15px;
+
+    width:100%;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#0d6efd;
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+.route-map-button:hover{
+
+    background:#084298;
+
+    transform:translateY(-2px);
+
 }
