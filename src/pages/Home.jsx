@@ -782,7 +782,7 @@ async (
           MENÚ LATERAL
       ================================== */}
 <aside
-  data-tutorial="tutorial-sidebar"
+  data-tutorial="tutorial-sidebar-pc"
   className={
     `sidebar ${
       sidebarOpen
@@ -944,6 +944,7 @@ async (
           <button
             type="button"
             className="logo-button"
+            data-tutorial="tutorial-sidebar-mobile"
             onClick={() =>
               setSidebarOpen(
                 (prev) => !prev

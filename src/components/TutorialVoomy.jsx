@@ -51,13 +51,23 @@ const pasos = [
     posicion: "left"
   },
 
-  {
-    elemento: "tutorial-sidebar",
+    {
+    elemento: window.innerWidth <= 768
+        ? "tutorial-sidebar-mobile"
+        : "tutorial-sidebar-pc",
+
     titulo: "Menú principal",
+
     texto:
-      "Desde este menú puedes acceder al mapa, información y crear nuevas conversaciones.",
-    posicion: "right"
-  },
+        window.innerWidth <= 768
+        ? "Toca este botón para abrir el menú lateral donde podrás acceder al mapa, información y crear nuevas conversaciones."
+        : "Desde este menú puedes acceder al mapa, información y crear nuevas conversaciones.",
+
+    posicion:
+        window.innerWidth <= 768
+        ? "bottom"
+        : "right"
+    },
 
   {
     elemento: "tutorial-perfil",
