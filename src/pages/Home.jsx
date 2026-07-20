@@ -14,7 +14,7 @@ import api from "../services/api";
 import ChatBot from "../components/ChatBot";
 import Mapa from "../components/Mapa";
 import TutorialVoomy from "../components/TutorialVoomy";
-
+import logoChatbus from "../assets/logo-negro-fondoblanco.png";
 import "../App.css";
 
 import {
@@ -955,9 +955,11 @@ async (
             <FaBars />
           </button>
 
-          <h1>
-            Voomy
-          </h1>
+          <img
+            src={logoChatbus}
+            alt="ChatBus"
+            className="topbar-logo"
+          />
 
           {usuario ? (
             <div className="profile-menu">
@@ -1147,11 +1149,11 @@ async (
             </span>
 
             <h2>
-              Bienvenido a Voomy
+              Bienvenido a ChatBus
             </h2>
 
             <p className="information-modal-description">
-              Voomy es una aplicación
+              ChatBus es una aplicación
               desarrollada exclusivamente
               para consultar las rutas del
               transporte público urbano de
