@@ -1,106 +1,106 @@
-import { Link } from "react-router-dom";
-import Mapa from "../components/Mapa";
+  import { Link } from "react-router-dom";
+  import Mapa from "../components/Mapa";
 
-function MapaPage() {
-  const leerLocalStorage = (
-    clave,
-    valorPredeterminado
-  ) => {
-    try {
-      const valor =
-        localStorage.getItem(clave);
+  function MapaPage() {
+    const leerLocalStorage = (
+      clave,
+      valorPredeterminado
+    ) => {
+      try {
+        const valor =
+          localStorage.getItem(clave);
 
-      return valor
-        ? JSON.parse(valor)
-        : valorPredeterminado;
-    } catch (error) {
-      console.error(
-        `Error leyendo ${clave}:`,
-        error
+        return valor
+          ? JSON.parse(valor)
+          : valorPredeterminado;
+      } catch (error) {
+        console.error(
+          `Error leyendo ${clave}:`,
+          error
+        );
+
+        return valorPredeterminado;
+      }
+    };
+
+    const origen =
+      leerLocalStorage(
+        "origen",
+        null
       );
 
-      return valorPredeterminado;
-    }
-  };
+    const destino =
+      leerLocalStorage(
+        "destino",
+        null
+      );
 
-  const origen =
-    leerLocalStorage(
-      "origen",
-      null
-    );
+    const rutaRecomendada =
+      leerLocalStorage(
+        "rutaRecomendada",
+        null
+      );
 
-  const destino =
-    leerLocalStorage(
-      "destino",
-      null
-    );
+    const segmentosRuta =
+      leerLocalStorage(
+        "segmentosRuta",
+        []
+      );
 
-  const rutaRecomendada =
-    leerLocalStorage(
-      "rutaRecomendada",
-      null
-    );
+    const caminataInicio =
+      leerLocalStorage(
+        "caminataInicio",
+        null
+      );
 
-  const segmentosRuta =
-    leerLocalStorage(
-      "segmentosRuta",
-      []
-    );
+    const caminataFin =
+      leerLocalStorage(
+        "caminataFin",
+        null
+      );
 
-  const caminataInicio =
-    leerLocalStorage(
-      "caminataInicio",
-      null
-    );
+    const transbordosInfo =
+      leerLocalStorage(
+        "transbordosInfo",
+        []
+      );
 
-  const caminataFin =
-    leerLocalStorage(
-      "caminataFin",
-      null
-    );
+    return (
+      <div className="mapa-page">
+        <div className="mapa-header">
+          <Link to="/">
+            <button
+              type="button"
+              className="volver-btn"
+            >
+              Volver
+            </button>
+          </Link>
+        </div>
 
-  const transbordosInfo =
-    leerLocalStorage(
-      "transbordosInfo",
-      []
-    );
-
-  return (
-    <div className="mapa-page">
-      <div className="mapa-header">
-        <Link to="/">
-          <button
-            type="button"
-            className="volver-btn"
-          >
-            Volver
-          </button>
-        </Link>
+        <div className="mapa-full">
+          <Mapa
+            origen={origen}
+            destino={destino}
+            rutaRecomendada={
+              rutaRecomendada
+            }
+            segmentos={
+              segmentosRuta
+            }
+            caminataInicio={
+              caminataInicio
+            }
+            caminataFin={
+              caminataFin
+            }
+            transbordosInfo={
+              transbordosInfo
+            }
+          />
+        </div>
       </div>
+    );
+  }
 
-      <div className="mapa-full">
-        <Mapa
-          origen={origen}
-          destino={destino}
-          rutaRecomendada={
-            rutaRecomendada
-          }
-          segmentos={
-            segmentosRuta
-          }
-          caminataInicio={
-            caminataInicio
-          }
-          caminataFin={
-            caminataFin
-          }
-          transbordosInfo={
-            transbordosInfo
-          }
-        />
-      </div>
-    </div>
-  );
-}
-
-export default MapaPage;
+  export default MapaPage;

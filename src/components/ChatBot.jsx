@@ -490,7 +490,7 @@ function ChatBot({
             title="Desactivar ubicación actual"
           >
             <FaLocationArrow />
-            <span>Ubicación activa</span>
+            <span>Desactivar Ubicación</span>
           </button>
         )}
       </div>
