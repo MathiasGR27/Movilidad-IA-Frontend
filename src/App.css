@@ -97,7 +97,7 @@ button {
   height: 42px;
   width: auto;
   object-fit: contain;
-  border-radius: 8px; /* opcional: si el PNG tiene el fondo azul integrado como badge, esto suaviza las esquinas */
+  border-radius: 8px;
 }
 
 button:disabled {
@@ -190,6 +190,10 @@ a:focus-visible {
 .profile-action-buttons .danger:hover {
   background: var(--teal-darker);
   color: #ffffff;
+}
+
+.btn-eliminar:active {
+  transform: scale(0.97);
 }
 
 .layout {
@@ -529,9 +533,6 @@ a:focus-visible {
   min-height: 0;
 }
 
-/* Wrapper agregado para el tutorial guiado: no debe alterar el
-   layout original del chat, solo re-transmitir la altura que el
-   grid de .content ya le da, hacia .chat-section. */
 .chat-tutorial-wrapper {
   display: flex;
   flex-direction: column;
@@ -853,10 +854,6 @@ a:focus-visible {
   background-color: var(--border);
 }
 
-.btn-eliminar:active {
-  transform: scale(0.97);
-}
-
 .mensaje-modal {
   text-align: center;
 }
@@ -923,9 +920,251 @@ a:focus-visible {
   font-size: 14px;
 }
 
-.profile-page,
-.historial-page,
+/* =========================================================
+   DETALLE DEL HISTORIAL — ESTILO CHAT
+========================================================= */
+
 .detalle-page {
+  width: 100%;
+  max-width: 1200px;
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 36px;
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+.detalle-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 26px;
+}
+
+.detalle-header > div:first-child {
+  min-width: 0;
+}
+
+.detalle-eyebrow {
+  display: inline-block;
+  margin-bottom: 6px;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.detalle-header h1 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.detalle-header p {
+  margin-top: 6px;
+  color: var(--ink-muted);
+  font-size: 14px;
+}
+
+.detalle-back-link {
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.detalle-header .volver-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.detalle-chat-card {
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2);
+}
+
+.detalle-chat-header {
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  padding: 16px 22px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.detalle-chat-status {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.detalle-status-dot {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+  background: #27a66c;
+  border: 3px solid #dff5e9;
+  border-radius: 50%;
+  box-sizing: content-box;
+}
+
+.detalle-chat-status > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detalle-chat-status strong {
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.detalle-chat-status span {
+  color: var(--ink-muted);
+  font-size: 12px;
+}
+
+.detalle-chat-messages {
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(170, 205, 220, 0.16),
+      transparent 34%
+    ),
+    var(--surface-alt);
+}
+
+.detalle-message-row {
+  width: 100%;
+}
+
+.detalle-message-row .bubble {
+  max-width: min(720px, 78%);
+  padding: 15px 18px;
+  white-space: normal;
+}
+
+.detalle-message-author {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.detalle-texto {
+  color: inherit;
+  font-size: 14px;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.detalle-user-bubble {
+  color: var(--teal-text-on-light);
+  background: var(--teal-light);
+  border: 1px solid #d7dbee;
+  border-bottom-right-radius: 4px;
+}
+
+.detalle-bot-avatar {
+  color: #ffffff;
+  background: var(--teal-dark);
+  border-color: var(--teal-dark);
+}
+
+.detalle-bot-bubble {
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-bottom-left-radius: 4px;
+}
+
+.detalle-map-button {
+  width: fit-content;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 16px;
+  padding: 10px 16px;
+  color: #ffffff;
+  background: var(--teal-dark);
+  border: none;
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    background var(--ease),
+    transform var(--ease),
+    box-shadow var(--ease);
+}
+
+.detalle-map-button:hover {
+  background: var(--teal-darker);
+  box-shadow: var(--shadow-2);
+  transform: translateY(-1px);
+}
+
+.detalle-map-button:active {
+  transform: scale(0.98);
+}
+
+.historial-detalle-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.historial-detalle-state h2 {
+  color: var(--ink);
+  font-family: var(--font-display);
+}
+
+.historial-detalle-state p {
+  max-width: 460px;
+  color: var(--ink-muted);
+}
+
+.historial-detalle-state a {
+  text-decoration: none;
+}
+
+.detalle-loader {
+  width: 38px;
+  height: 38px;
+  border: 4px solid var(--teal-light);
+  border-top-color: var(--teal-dark);
+  border-radius: 50%;
+  animation: detalleSpin 0.8s linear infinite;
+}
+
+@keyframes detalleSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.profile-page,
+.historial-page {
   flex: 1;
   overflow-y: auto;
   height: 100%;
@@ -1330,27 +1569,6 @@ a:focus-visible {
   width: 100%;
   margin-top: 10px;
   padding: 11px;
-}
-
-.detalle-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 36px;
-  background: var(--bg);
-}
-
-.detalle-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 26px;
-}
-
-.detalle-header h1 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  color: var(--ink);
-  font-size: 30px;
 }
 
 .detalle-card {
@@ -1874,6 +2092,7 @@ a:focus-visible {
 }
 
 @media (max-width: 768px) {
+
   html, body, #root {
     overflow: hidden;
     height: 100%;
@@ -2099,51 +2318,63 @@ a:focus-visible {
     flex-shrink: 0;
   }
 
-  .detalle-page { padding: 16px; overflow-y: auto; }
-  .mensaje-user { width: 90%; }
-  .auth-card    { width: 100%; }
-
-  .voomy-login-page {
-    padding: 28px 16px;
-    gap: 18px;
+  .detalle-page {
+    padding: 16px;
+    overflow-y: auto;
   }
 
-  .voomy-logo { gap: 12px; }
+  .detalle-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
 
-  .login-app-description { padding: 12px 14px; }
-  .login-app-description p { font-size: 13px; }
+  .detalle-header h1 {
+    font-size: 26px;
+  }
 
-  .voomy-login-container {
+  .detalle-header .volver-btn {
     width: 100%;
-    padding: 26px 20px;
   }
 
-  .voomy-mascot img { width: 120px; }
-
-  .voomy-login-container h2 {
-    font-size: 16px;
-    margin-bottom: 20px;
-  }
-
-  .login-service-label { font-size: 12px; }
-
-  .voomy-login-container input,
-  .voomy-login-container button {
+  .detalle-back-link {
     width: 100%;
-    max-width: 320px;
   }
 
-  .auth-error {
+  .detalle-chat-messages {
+    min-height: 350px;
+    padding: 20px 14px;
+    gap: 20px;
+  }
+
+  .detalle-message-row {
+    gap: 8px;
+  }
+
+  .detalle-message-row .avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
+  }
+
+  .detalle-message-row .bubble {
+    max-width: calc(100% - 44px);
+    padding: 12px 14px;
+  }
+
+  .detalle-texto {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .detalle-map-button {
     width: 100%;
-    max-width: 320px;
   }
 
-  .information-modal {
-    padding: 28px 18px 20px;
-  }
+  .route-detail-text strong { font-size: 11px; }
+  .route-detail-text span   { font-size: 10px; }
 
-  .information-modal h2 { font-size: 22px; }
-  .information-modal-description { font-size: 14px; }
+  .route-location strong { font-size: 12px; }
 
   .route-response-card {
     padding: 11px;
@@ -2184,11 +2415,6 @@ a:focus-visible {
     height: 30px;
     font-size: 13px;
   }
-
-  .route-detail-text strong { font-size: 11px; }
-  .route-detail-text span   { font-size: 10px; }
-
-  .route-location strong { font-size: 12px; }
 }
 
 /* =========================================================
@@ -2210,8 +2436,6 @@ a:focus-visible {
 
   background-color: #f5f8fb;
 }
-
-/* ---------- PANEL IZQUIERDO (informativo) ---------- */
 
 .login-information-panel {
   position: relative;
@@ -2350,12 +2574,8 @@ a:focus-visible {
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
 }
 
-.login-benefit-item:nth-child(1) .login-benefit-icon {
-  background: linear-gradient(135deg, #AACDDC, #AACDDC);
-}
-.login-benefit-item:nth-child(2) .login-benefit-icon {
-  background: linear-gradient(135deg, #AACDDC, #AACDDC);
-}
+.login-benefit-item:nth-child(1) .login-benefit-icon,
+.login-benefit-item:nth-child(2) .login-benefit-icon,
 .login-benefit-item:nth-child(3) .login-benefit-icon {
   background: linear-gradient(135deg, #AACDDC, #AACDDC);
 }
@@ -2364,9 +2584,6 @@ a:focus-visible {
   width: 58%;
   height: 58%;
   object-fit: contain;
-  /* Se elimina "filter: brightness(0) invert(1)" — ese filtro aplastaba
-     cualquier ícono a color a una silueta blanca sólida, por eso se veían
-     como cuadrados/carpetas en vez de mostrar el ícono real. */
 }
 
 .login-benefit-item div:last-child {
@@ -2391,8 +2608,6 @@ a:focus-visible {
   line-height: 1.55;
   text-align: left;
 }
-
-/* ---------- PANEL DERECHO (formulario) ---------- */
 
 .login-form-panel {
   position: relative;
@@ -2583,8 +2798,6 @@ a:focus-visible {
   line-height: 1.5;
   text-align: left;
 }
-
-/* ---------- RESPONSIVE ---------- */
 
 @media (max-width: 1180px) {
   .login-page {
@@ -2785,7 +2998,7 @@ a:focus-visible {
   display: none;
 }
 
-.route-map-button{
+.route-map-button {
   margin-top: 15px;
   width: 100%;
   padding: 12px;
@@ -2799,7 +3012,7 @@ a:focus-visible {
   transition: .3s;
 }
 
-.route-map-button:hover{
+.route-map-button:hover {
   background: #084298;
   transform: translateY(-2px);
 }

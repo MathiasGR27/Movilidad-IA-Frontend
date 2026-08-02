@@ -1,13 +1,11 @@
+import { useEffect, useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
-  useEffect,
-  useState
-} from "react";
-
-import {
-  useParams,
-  Link,
-  useNavigate
-} from "react-router-dom";
+  FaUser,
+  FaRobot,
+  FaArrowLeft,
+  FaMapMarkedAlt,
+} from "react-icons/fa";
 
 import api from "../services/api";
 
@@ -16,6 +14,8 @@ function HistorialDetalle() {
   const navigate = useNavigate();
 
   const [detalle, setDetalle] = useState(null);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState("");
 
   // =====================================
   // CARGAR DETALLE DEL HISTORIAL
@@ -23,10 +23,20 @@ function HistorialDetalle() {
   useEffect(() => {
     const cargarDetalle = async () => {
       try {
+        setCargando(true);
+        setError("");
+
         const response = await api.get(`/historial/detalle/${id}`);
         setDetalle(response.data);
       } catch (error) {
         console.error("Error cargando detalle:", error);
+
+        setError(
+          error.response?.data?.mensaje ||
+            "No fue posible cargar la conversación."
+        );
+      } finally {
+        setCargando(false);
       }
     };
 
@@ -37,50 +47,45 @@ function HistorialDetalle() {
   // ABRIR RUTA EN MAPA
   // =====================================
   const verMapa = () => {
-    if (!detalle) {
-      return;
-    }
+    if (!detalle) return;
 
-    // Ruta dibujada
     localStorage.setItem(
       "rutaRecomendada",
       JSON.stringify(detalle.tramo_geojson || null)
     );
 
-    // Segmentos de buses
     localStorage.setItem(
       "segmentosRuta",
       JSON.stringify(detalle.segmentos || [])
     );
 
-    // Caminata inicial
     localStorage.setItem(
       "caminataInicio",
       JSON.stringify(detalle.caminata_inicio || null)
     );
 
-    // Caminata final
     localStorage.setItem(
       "caminataFin",
       JSON.stringify(detalle.caminata_fin || null)
     );
 
-    // Información de transbordos
     localStorage.setItem(
       "transbordosInfo",
       JSON.stringify(detalle.transbordos_info || [])
     );
 
-    // Origen
     localStorage.setItem(
       "origen",
-      JSON.stringify({ nombre: detalle.origen })
+      JSON.stringify({
+        nombre: detalle.origen || "Origen",
+      })
     );
 
-    // Destino
     localStorage.setItem(
       "destino",
-      JSON.stringify({ nombre: detalle.destino })
+      JSON.stringify({
+        nombre: detalle.destino || "Destino",
+      })
     );
 
     console.log("Ruta cargada desde historial:", detalle);
@@ -89,39 +94,111 @@ function HistorialDetalle() {
   };
 
   // =====================================
-  // CARGANDO
+  // ESTADOS DE CARGA Y ERROR
   // =====================================
-  if (!detalle) {
-    return <p>Cargando conversación...</p>;
+  if (cargando) {
+    return (
+      <div className="detalle-page historial-detalle-state">
+        <div className="detalle-loader"></div>
+        <p>Cargando conversación...</p>
+      </div>
+    );
   }
+
+  if (error || !detalle) {
+    return (
+      <div className="detalle-page historial-detalle-state">
+        <h2>No se pudo cargar la conversación</h2>
+        <p>{error}</p>
+
+        <Link to="/historial">
+          <button className="volver-btn">
+            <FaArrowLeft />
+            Volver al historial
+          </button>
+        </Link>
+      </div>
+    );
+  }
+
+  const existeRuta =
+    detalle.tramo_geojson ||
+    detalle.segmentos?.length > 0 ||
+    detalle.caminata_inicio ||
+    detalle.caminata_fin;
 
   return (
     <div className="detalle-page">
       <div className="detalle-header">
-        <h1>Conversación guardada</h1>
+        <div>
+          <span className="detalle-eyebrow">Historial de rutas</span>
+          <h1>Conversación guardada</h1>
+          <p>Consulta los mensajes y vuelve a visualizar el recorrido.</p>
+        </div>
 
-        <Link to="/historial">
-          <button className="volver-btn">Volver</button>
+        <Link to="/historial" className="detalle-back-link">
+          <button className="volver-btn">
+            <FaArrowLeft />
+            Volver
+          </button>
         </Link>
       </div>
 
-      <div className="detalle-card">
-        {/* MENSAJE USUARIO */}
-        <div className="mensaje-user">
-          <h3>Consulta del usuario</h3>
-          <div className="detalle-texto">{detalle.consulta}</div>
+      <div className="detalle-chat-card">
+        <div className="detalle-chat-header">
+          <div className="detalle-chat-status">
+            <span className="detalle-status-dot"></span>
+
+            <div>
+              <strong>ChatBus</strong>
+              <span>Conversación almacenada</span>
+            </div>
+          </div>
         </div>
 
-        {/* RESPUESTA IA */}
-        <div className="mensaje-bot">
-          <h3>Respuesta de la IA</h3>
-          <div className="detalle-texto">{detalle.respuesta}</div>
+        <div className="detalle-chat-messages">
+          {/* MENSAJE DEL USUARIO */}
+          <div className="message-row user detalle-message-row">
+            <div className="bubble detalle-user-bubble">
+              <span className="detalle-message-author">Tú</span>
 
-          {(detalle.tramo_geojson || detalle.segmentos) && (
-            <button className="mapa-btn" onClick={verMapa}>
-               Ver ruta en mapa
-            </button>
-          )}
+              <div className="detalle-texto">
+                {detalle.consulta}
+              </div>
+            </div>
+
+            <div className="avatar user-avatar">
+              <FaUser />
+            </div>
+          </div>
+
+          {/* RESPUESTA DEL ASISTENTE */}
+          <div className="message-row bot detalle-message-row">
+            <div className="avatar detalle-bot-avatar">
+              <FaRobot />
+            </div>
+
+            <div className="bubble detalle-bot-bubble">
+              <span className="detalle-message-author">
+                Asistente ChatBus
+              </span>
+
+              <div className="detalle-texto">
+                {detalle.respuesta}
+              </div>
+
+              {existeRuta && (
+                <button
+                  type="button"
+                  className="detalle-map-button"
+                  onClick={verMapa}
+                >
+                  <FaMapMarkedAlt />
+                  Ver ruta en el mapa
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -71,37 +71,98 @@ const obtenerPosicion = (punto) => {
    CAMINATAS
 ================================= */
 
+const obtenerCoordenadasCaminata = (caminata) => {
+  const coordenadas = caminata?.geojson?.coordinates;
+
+  if (!Array.isArray(coordenadas) || coordenadas.length === 0) {
+    return [];
+  }
+
+  return coordenadas;
+};
+
+const convertirGeoJSONAPosicion = (coordenada) => {
+  if (!Array.isArray(coordenada) || coordenada.length < 2) {
+    return null;
+  }
+
+  const lon = Number(coordenada[0]);
+  const lat = Number(coordenada[1]);
+
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+    return null;
+  }
+
+  return [lat, lon];
+};
+
 const obtenerOrigenCaminata = (caminataInicio) => {
-  return obtenerPosicion(
+  const posicionGuardada = obtenerPosicion(
     caminataInicio?.origen ||
       caminataInicio?.origen_coordenadas ||
       caminataInicio?.punto_origen
   );
+
+  if (posicionGuardada) {
+    return posicionGuardada;
+  }
+
+  const coordenadas = obtenerCoordenadasCaminata(caminataInicio);
+
+  return convertirGeoJSONAPosicion(coordenadas[0]);
 };
 
 const obtenerPrimeraParada = (caminataInicio) => {
-  return obtenerPosicion(
+  const posicionGuardada = obtenerPosicion(
     caminataInicio?.parada ||
       caminataInicio?.parada_coordenadas ||
       caminataInicio?.primera_parada ||
       caminataInicio?.primera_parada_coordenadas
   );
+
+  if (posicionGuardada) {
+    return posicionGuardada;
+  }
+
+  const coordenadas = obtenerCoordenadasCaminata(caminataInicio);
+
+  return convertirGeoJSONAPosicion(
+    coordenadas[coordenadas.length - 1]
+  );
 };
 
 const obtenerUltimaParada = (caminataFin) => {
-  return obtenerPosicion(
+  const posicionGuardada = obtenerPosicion(
     caminataFin?.parada ||
       caminataFin?.parada_coordenadas ||
       caminataFin?.ultima_parada ||
       caminataFin?.ultima_parada_coordenadas
   );
+
+  if (posicionGuardada) {
+    return posicionGuardada;
+  }
+
+  const coordenadas = obtenerCoordenadasCaminata(caminataFin);
+
+  return convertirGeoJSONAPosicion(coordenadas[0]);
 };
 
 const obtenerDestinoCaminata = (caminataFin) => {
-  return obtenerPosicion(
+  const posicionGuardada = obtenerPosicion(
     caminataFin?.destino ||
       caminataFin?.destino_coordenadas ||
       caminataFin?.punto_destino
+  );
+
+  if (posicionGuardada) {
+    return posicionGuardada;
+  }
+
+  const coordenadas = obtenerCoordenadasCaminata(caminataFin);
+
+  return convertirGeoJSONAPosicion(
+    coordenadas[coordenadas.length - 1]
   );
 };
 
